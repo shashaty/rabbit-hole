@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        button {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 110px;
+            width: 250px;
+            outline: none;
+        }
+
+        button:hover {
+            cursor: pointer;
+            color: red;
+        }
+
+        .wrapper {
+            width: 400px;
+            height: 300px;
+        }
+
+        .buttonContainer {
+            padding-top: 20px;
+        }
+
+        .buttonText {
+            font-size: 2rem;
+            transform: translateY(-25%);
+        }
+
+        .mainHeader {
+            text-align: center;
+        }
+
+        #savePage {}
+
+        #pageDisplay {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <h1 class="mainHeader">
+            Rabbit Hole
+        </h1>
+
+        <div class="buttonContainer">
+            <button id="savePage">
+                <p class="buttonText">
+                    Mark as interesting
+                </p>
+            </button>
+        </div>
+        <p id="pageDisplay"></p>
+        <script src="popup.js"></script>
+    </div>
+</body>
+
+</html>
