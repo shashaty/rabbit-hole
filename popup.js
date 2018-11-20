@@ -9,8 +9,12 @@
 // stores the current page by setting the key to the
 // page title string (minus the " - Wikipedia" part),
 // and the value to the url.
-let savePage = document.getElementById('savePage');
-let pageDisplay = document.getElementById('pageDisplay');
+let savePage = document.getElementById('savePage'),
+    pageDisplay = document.getElementById('pageDisplay'),
+    timerToggle = document.getElementById('timerToggle'),
+    timerReset = document.getElementById('timerReset'),
+    timerDisplay = document.getElementById('timerDisplay');
+
 
 savePage.addEventListener("click", function () {
 
@@ -33,6 +37,30 @@ savePage.addEventListener("click", function () {
         pageDisplay.innerHTML = "Saved! " + title
 
     });
+});
+
+var timerToggled = false;
+var startTime = 0;
+var finishTime = 0;
+timerToggle.addEventListener("click", function () {
+    var timerDifference = 0;
+    timerToggled = !timerToggled;
+
+    if (timerToggled) {
+        timerToggle.getElementsByTagName('p')[0].innerHTML = "Stop timer";
+        startTime = Date.now();
+    } else {
+        timerToggle.getElementsByTagName('p')[0].innerHTML = "Start timer";
+        finishTime = Date.now();
+        timerDifference = (finishTime - startTime) / 1000.00;
+        timerDisplay.innerHTML = timerDifference.toString() + " seconds!";
+        startTime = 0;
+        finishTime = 0;
+    };
+
+
+
+
 });
 
 // Sample color changing code from Chrome API tutorial

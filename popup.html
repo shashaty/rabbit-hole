@@ -4,17 +4,20 @@
 <head>
     <style>
         button {
+            background-color: antiquewhite;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            height: 110px;
-            width: 250px;
+            height: 50px;
+            width: 100px;
             outline: none;
+            border-radius: 20px;
         }
 
         button:hover {
             cursor: pointer;
             color: red;
+            opacity: 0.4;
         }
 
         .wrapper {
@@ -26,8 +29,14 @@
             padding-top: 20px;
         }
 
+        .buttonsWrapper {
+            width: 110px;
+            height: 60px;
+
+        }
+
         .buttonText {
-            font-size: 2rem;
+            font-size: 0.8rem;
             transform: translateY(-25%);
         }
 
@@ -35,11 +44,19 @@
             text-align: center;
         }
 
+        #leftButtonsWrapper {
+            text-align: left;
+        }
+
         #savePage {}
 
         #pageDisplay {
             text-align: center;
             font-size: 1.5rem;
+        }
+
+        #timerDisplay {
+            text-align: right;
         }
 
     </style>
@@ -52,14 +69,38 @@
             Rabbit Hole
         </h1>
 
-        <div class="buttonContainer">
-            <button id="savePage">
-                <p class="buttonText">
-                    Mark as interesting
-                </p>
-            </button>
+        <div class="buttonsWrapper" id="leftButtonsWrapper">
+            <div class="buttonContainer">
+                <button id="savePage">
+                    <p class="buttonText">
+                        Mark as interesting
+                    </p>
+                </button>
+            </div>
+
+            <div class="buttonContainer">
+                <button id="timerToggle">
+                    <p class="buttonText">
+                        Start timer
+                    </p>
+                </button>
+            </div>
+
+            <div class="buttonContainer">
+                <button id="timerReset">
+                    <p class="buttonText">
+                        Reset timer
+                    </p>
+                </button>
+            </div>
         </div>
-        <p id="pageDisplay"></p>
+
+        <p id="pageDisplay">
+            <!-- test area for dynamic page name insertion -->
+        </p>
+        <p id="timerDisplay">
+            <!-- test area for dynamic timer insertion -->
+        </p>
         <script src="popup.js"></script>
     </div>
 </body>
