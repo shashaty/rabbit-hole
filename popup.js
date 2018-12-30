@@ -5,6 +5,7 @@
 'use strict';
 
 
+
 // when the #savePage button is clicked,
 // stores the current page by setting the key to the
 // page title string (minus the " - Wikipedia" part),
@@ -13,8 +14,18 @@ let savePage = document.getElementById('savePage'),
     pageDisplay = document.getElementById('pageDisplay'),
     timerToggle = document.getElementById('timerToggle'),
     timerReset = document.getElementById('timerReset'),
-    timerDisplay = document.getElementById('timerDisplay');
+    timerDisplay = document.getElementById('timerDisplay'),
+    descentButton = document.getElementById('descentButton'),
+    descentContainer = document.getElementById("descentContainer");
 
+descentButton.addEventListener("mouseover", function () {
+    descentContainer.classList.add("descentContainerOnHover");
+    
+});
+
+descentButton.addEventListener("mouseout", function () {
+    descentContainer.classList.remove("descentContainerOnHover");
+});
 
 savePage.addEventListener("click", function () {
 
@@ -24,8 +35,8 @@ savePage.addEventListener("click", function () {
         'currentWindow': true
     }, function (tabs) {
         // save the page url and title
-        var url = tabs[0].url;
-        var title = tabs[0].title.replace(' - Wikipedia', '')
+        var url = tabs[0].url,
+            title = tabs[0].title.replace(' - Wikipedia', '');
         chrome.storage.sync.set({
             // key: value
             title: url
@@ -33,12 +44,15 @@ savePage.addEventListener("click", function () {
             // Prints out the saved url to the console of the popup window
             // (/not/ to the console of the active tab!)
             console.log('Value is set to ' + url);
-        })
-        pageDisplay.innerHTML = "Saved! " + title
+        });
+        pageDisplay.innerHTML = "Saved! " + title;
 
     });
 });
 
+
+// preliminary timer code, to be optimized further:
+// end goal is a visual stopwatch, with a start/stop and reset button.
 var timerToggled = false;
 var startTime = 0;
 var finishTime = 0;
@@ -56,32 +70,9 @@ timerToggle.addEventListener("click", function () {
         timerDisplay.innerHTML = timerDifference.toString() + " seconds!";
         startTime = 0;
         finishTime = 0;
-    };
+    }
 
 
 
 
 });
-
-// Sample color changing code from Chrome API tutorial
-// ----------------------------------------------------
-
-//let changeColor = document.getElementById('changeColor');
-//chrome.storage.sync.get('color', function (data) {
-//    changeColor.style.backgroundColor = data.color;
-//    changeColor.setAttribute('value', data.color);
-//});
-
-
-//changeColor.onclick = function (element) {
-//    let color = element.target.value;
-//    chrome.tabs.query({
-//        active: true,
-//        currentWindow: true
-//    }, function (tabs) {
-//        chrome.tabs.executeScript(
-//            tabs[0].id, {
-//                code: 'document.body.style.backgroundColor = "' + color + '";'
-//            });
-//    });
-//};

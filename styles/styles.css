@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+
+body {
+    background: linear-gradient(rgba(77, 48, 48, 0), #451616);
+    background-attachment: fixed;
+    width: 274px;
+    height: 496px;
+}
+
+.wrapper {
+
+    width: inherit;
+    height: inherit;
+    overflow: scroll;
+
+}
+
+.topLeftHeader {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .9375rem;
+    text-align: left;
+    opacity: 0.2;
+    margin-left: 10px;
+    transform: translateY(-75%);
+
+}
+
+
+.mainHeader {
+
+    font-family: "Roboto Mono", monospace;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 1.875rem;
+    text-align: center;
+    position: relative;
+}
+
+#leftButtonsWrapper {
+    text-align: left;
+    display: none;
+}
+
+#centerButtonsWrapper {
+    display: inline;
+    margin: auto;
+}
+
+
+button {
+    background-color: antiquewhite;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+    width: 100px;
+    outline: none;
+    border-radius: 20px;
+}
+
+@keyframes darkenButton {
+    from {background-color: antiquewhite;}
+    to {background-color: red;}
+}
+
+button:hover {
+    cursor: pointer;
+    animation-name: darkenButton;
+    animation-duration: 6s;
+    
+}
+
+.buttonContainer {
+   
+    
+}
+
+#descentContainer {
+    
+    height: 250px;
+    width: 250px;
+    
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+
+.descentContainerOnHover {
+    background-image: url(../images/fire-png-gif--489.gif);
+    background-position: 50% -145%;
+    background-size: 232px;
+    background-repeat: no-repeat;
+    
+    height: 250px;
+    width: 250px;
+    
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+
+.buttonsWrapper {
+    width: 110px;
+    height: 60px;
+
+}
+
+#descentButton {
+    display: inline-block;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    
+
+    
+}
+
+.buttonText {
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.8rem;
+    transform: translateY(-25%);
+}
+
+
+#savePage {}
+
+#pageDisplay {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#timerDisplay {
+    text-align: right;
+}
+
+#homeDiv {
+    position: fixed;
+    width: 106px;
+    height: 98px;
+    left: 0px;
+    top: 418px;
+
+    /*    background-image: url("../images/hole_1f573.png") !important;*/
+    background-position: 50% 0%;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    /*    background-blend-mode: soft-light;*/
+
+}
+
+#holeIcon {
+    width: 75%;
+    height: 75%;
+    margin-left: 12%;
+}
+
+#treesDiv {
+    position: fixed;
+    width: 80px;
+    height: 98px;
+    left: 106px;
+    top: 418px;
+
+
+}
+
+#treeIcon {
+    width: 75%;
+    height: 75%;
+    margin-left: 12%;
+    margin-top: 12%;
+}
+
+#settingsDiv {
+    position: fixed;
+    width: 106px;
+    height: 98px;
+    left: 186px;
+    top: 418px;
+
+
+}
+
+#settingsIcon {
+    width: 75%;
+    height: 75%;
+    margin-left: 12%;
+    margin-top: 12%;
+}
+
+.currentTab {
+    background: rgb(168, 144, 144) !important;
+
+}
+
+.clickableDiv {
+    background-color: rgba(77, 48, 48, 1);
+}
+
+.clickableDiv:hover {
+    background: rgb(168, 144, 144);
+
+    cursor: pointer;
+
+}
