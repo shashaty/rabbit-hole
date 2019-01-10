@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test Tree Page</title>
+        <link href="styles/tree_styles.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+
+<div style="border:solid;">
+    <h3>Programmatically Generated Tree</h3>
+
+        <div class="tree" id="tree_div">
+        </div>
+
+</div>
+<div style="border:solid;">
+    <h3>Demo Tree Structure</h3>
+
+        <!-- Planned tree structure -->
+        <div class="tree">
+        <ul>
+            <li class="node" id="node_<title>">
+                <div id="info_<title>">root</div>
+                <ul id="children_<title>">
+                    <li>child</li>
+
+                    <li class="node" id="node_<title>">
+                        <div id="info_<title>">child</div>
+                        <ul id="children_<title>">
+                            <li>child</li>
+                            <li>child</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+        </div>
+
+</div>
+<div style="border:solid;">
+    <h3>Tree from https://codepen.io/philippkuehn/pen/QbrOaN</h3>
+
+    <div class="tree">
+        <ul>
+          <li>
+            <a href="#">Parent</a>
+            <ul>
+              <li>
+                <a href="#">Child</a>
+                <ul>
+                  <li>
+                    <a href="#">Grand Child</a>
+                  </li><li>
+                    <a href="#">Grand Child</a>
+                    <ul>
+                      <li>
+                        <a href="#">Grand Child</a>
+                      </li><li>
+                        <a href="#">Grand Child</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li><li>
+                <a href="#">Child</a>
+                <ul>
+                  <li>
+                    <a href="#">Grand Child</a>
+                    <ul>
+                      <li>
+                        <a href="#">Grand Grand Child</a>
+                      </li>
+                    </ul>
+                  </li><li>
+                    <a href="#">Grand Child</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+    </div>
+</div>
+
+      <script src="showtree.js"></script>
+  </body>
+</html>

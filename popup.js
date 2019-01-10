@@ -20,11 +20,24 @@ let savePage = document.getElementById('savePage'),
 
 descentButton.addEventListener("mouseover", function () {
     descentContainer.classList.add("descentContainerOnHover");
-    
+
 });
 
 descentButton.addEventListener("mouseout", function () {
     descentContainer.classList.remove("descentContainerOnHover");
+});
+
+// temporarily repurposed the descend button for opening the display tree page
+descentButton.addEventListener("click", function () {
+    var tabby;
+
+    chrome.tabs.create(
+        {
+            'active': true,
+            'url':"/showtree.html?tree=test_text"
+        },
+        function(tab) {}
+    );
 });
 
 savePage.addEventListener("click", function () {
