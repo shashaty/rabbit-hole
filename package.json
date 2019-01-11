@@ -1,0 +1,23 @@
+{
+  "name": "rabbit_hole",
+  "version": "1.0.0",
+  "description": "a chrome extension for wikipedia binges",
+  "main": "background.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shashaty/rabbit-hole.git"
+  },
+  "author": "Alec Shashaty & Arzang Kasiri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shashaty/rabbit-hole/issues"
+  },
+  "homepage": "https://github.com/shashaty/rabbit-hole#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
+}
