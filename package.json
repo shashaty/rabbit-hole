@@ -2,7 +2,6 @@
   "name": "rabbit_hole",
   "version": "1.0.0",
   "description": "a chrome extension for wikipedia binges",
-  "main": "background.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },

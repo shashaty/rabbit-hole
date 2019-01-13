@@ -4,31 +4,43 @@ var urlString = window.location.href;
 var url = new URL(urlString);
 var treeName = url.searchParams.get('tree');
 
+
+class Tree {
+    
+    constructor(name,title,url) {
+        this.name = name;
+        this.root_node = {
+            page: {
+                title: title,
+                url: url
+            },      
+            children: []   
+        };
+    }
+    
+    addChild(child) {
+        this.root_node.children.push(child);
+    }
+}
+
+
+
+
+const thing = new Tree('asdlf','wfff','asdfdsaf');
+
+
 /*
 tree json representation:
 
 tree wrapper: {name, root_node}
 tree made up of nodes: {page, children}
 */
-var testTree = {
-    'tree_name': "Example Tree",
-    'root_node': {
-        'page': {
-            'title': "Cat",
-            'url': "wikipedia.org/cat"
-        },
-        'children': [
-            {
-                'page': {'title': "child 1"},
-                'children': []
-            },
-            {
-                'page': {'title': "child 2"},
-                'children': []
-            }
-        ]
-    }
-};
+
+const testTree = new Tree('example tree','cat','wikipedia.org/cat');
+
+testTree.addChild(new Tree('child 1','child 1',''));
+testTree.addChild(new Tree('child 2','child 2',''));
+
 
 function addPageInfo(node, nodeInfo) {
     // simple now, can show more later such as:
@@ -58,7 +70,7 @@ function addTreeNode(node, nodeContainer) {
         for (let i = 0; i < node.children.length; i++) {
             var childContainer = document.createElement("li");
 
-            addTreeNode(node.children[i], childContainer);
+            addTreeNode(node.children[i].root_node, childContainer);
 
             nodeChildren.appendChild(childContainer);
         }

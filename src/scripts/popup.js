@@ -6,6 +6,9 @@
 
 
 
+
+
+
 // when the #savePage button is clicked,
 // stores the current page by setting the key to the
 // page title string (minus the " - Wikipedia" part),
@@ -34,7 +37,7 @@ descentButton.addEventListener("click", function () {
     chrome.tabs.create(
         {
             'active': true,
-            'url':"/showtree.html?tree=test_text"
+            'url':"../src/showtree.html?tree=test_text"
         },
         function(tab) {}
     );
