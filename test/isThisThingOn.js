@@ -1,4 +1,10 @@
+const showtree = require('../src/scripts/showtree.js');
+
 const assert = require('assert');
+
+const afafwfw = new Tree('asdf','fwfwwf','asfwfgh');
+
+
 
 describe('testing testing', () => {
     

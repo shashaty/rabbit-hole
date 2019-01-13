@@ -12,6 +12,7 @@ body {
     width: inherit;
     height: inherit;
     overflow: scroll;
+    
 
 }
 
@@ -41,10 +42,7 @@ body {
     position: relative;
 }
 
-#leftButtonsWrapper {
-    text-align: left;
-    display: none;
-}
+
 
 #centerButtonsWrapper {
     display: inline;
@@ -52,11 +50,10 @@ body {
 }
 
 
+
 button {
     background-color: antiquewhite;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     height: 50px;
     width: 100px;
     outline: none;
@@ -78,6 +75,10 @@ button:hover {
 .buttonContainer {
    
     
+}
+
+.timerContainer {
+    display: none;
 }
 
 #descentContainer {
@@ -112,9 +113,9 @@ button:hover {
 }
 
 .buttonsWrapper {
-    width: 110px;
+    width: 100%;
     height: 60px;
-
+    margin:auto;
 }
 
 #descentButton {
@@ -125,6 +126,16 @@ button:hover {
     
 
     
+}
+
+#showTreesContainer {
+    margin: auto;
+    width: 40%;
+    
+}
+
+#showTrees {
+    margin: auto;
 }
 
 .buttonText {

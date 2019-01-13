@@ -5,13 +5,7 @@
 'use strict';
 
 chrome.runtime.onInstalled.addListener(function () {
-    // FROM TEMPLATE ----------------------------------------
-    chrome.storage.sync.set({
-        color: '#3aa757'
-    }, function () {
-        console.log("The color is green.");
-    });
-    // ------------------------------------------------------
+
 
     // quick script for activating the popup button when the active tab is a
     // wikipedia link.

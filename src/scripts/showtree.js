@@ -1,9 +1,15 @@
 'use strict';
 
+// var declarations
+/////////////////////////////////
+
 var urlString = window.location.href;
 var url = new URL(urlString);
 var treeName = url.searchParams.get('tree');
 
+
+// class defs
+/////////////////////////////////
 
 class Tree {
     
@@ -25,10 +31,6 @@ class Tree {
 
 
 
-
-const thing = new Tree('asdlf','wfff','asdfdsaf');
-
-
 /*
 tree json representation:
 
@@ -48,6 +50,9 @@ function addPageInfo(node, nodeInfo) {
     //  - hover over to display the wiki page
     nodeInfo.innerHTML = node.page.title;
 }
+
+// adding nodes
+//////////////////////////
 
 function addTreeNode(node, nodeContainer) {
     // TODO: titles with special characters might break the HTML
@@ -79,6 +84,9 @@ function addTreeNode(node, nodeContainer) {
     }
     
     }
+
+// database retrieval
+/////////////////////////////
 
 chrome.storage.local.get([treeName], function (result) {
     var tree = Object.keys(result).length > 0 ? result : testTree;

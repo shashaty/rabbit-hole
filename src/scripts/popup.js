@@ -13,7 +13,7 @@
 // stores the current page by setting the key to the
 // page title string (minus the " - Wikipedia" part),
 // and the value to the url.
-let savePage = document.getElementById('savePage'),
+let showTrees = document.getElementById('showTrees'),
     pageDisplay = document.getElementById('pageDisplay'),
     timerToggle = document.getElementById('timerToggle'),
     timerReset = document.getElementById('timerReset'),
@@ -31,7 +31,7 @@ descentButton.addEventListener("mouseout", function () {
 });
 
 // temporarily repurposed the descend button for opening the display tree page
-descentButton.addEventListener("click", function () {
+showTrees.addEventListener("click", function () {
     var tabby;
 
     chrome.tabs.create(
@@ -43,7 +43,7 @@ descentButton.addEventListener("click", function () {
     );
 });
 
-savePage.addEventListener("click", function () {
+descentButton.addEventListener("click", function () {
 
     chrome.tabs.query({
         // checking the active tab:
