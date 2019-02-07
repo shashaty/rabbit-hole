@@ -30,9 +30,28 @@ class Async {
         
     }
     
+    /**
+    * @param {string | string[]} [keys] - a string representing one key, an array representing
+    * multiple keys, or not entered, returning all key/value pairs in storage
+    */
     static async storageSyncGet(keys) {
-        const result = await chrome.storage.sync.get(keys);
-        return result;
+        if(keys) {
+            const result = await chrome.storage.sync.get(keys);
+            return result;
+        } else {
+            // fix for returning all items when no key(s) are specified
+            return new Promise((resolve, reject) => {
+               chrome.storage.sync.get(resolve); 
+            });
+            
+            
+        }
+        
+    }
+    
+    // clears all storage
+    static async storageSyncClear() {
+        await chrome.storage.sync.clear();
     }
 }
 

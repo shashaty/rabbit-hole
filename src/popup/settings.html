@@ -17,6 +17,35 @@
         <h1 class="mainHeader">
             settings
         </h1>
+        
+        <div id="clearOverlay">
+            <div class="buttonContainer" id="clearConfirmContainer">
+                <p id="warningText">are you sure you wanna do that?</p>
+                <button id="yesClear">
+                    <p class="buttonText">
+                        yeah
+                    </p>
+                </button>
+                <button id="noClear">
+                    <p class="buttonText">
+                        nah
+                    </p>
+                </button>
+            </div>
+        </div>
+        
+        <div class="buttonsWrapper" id="centerButtonsWrapper">
+            <div class="buttonContainer" id="clearContainer">
+                <button id="clearButton">
+                    <p class="buttonText">
+                        clear history
+                    </p>
+                </button>
+            </div>
+        </div>
+        
+        
+
 
         <a href="./popup.html">
             <div id="homeDiv" class="clickableDiv">
@@ -35,7 +64,8 @@
         </div>
     </div>
     <script type="module" src="/../../node_modules/chrome-extension-async/chrome-extension-async.js" defer></script>
-      <script type="module" src="./scripts/Tree.js" defer></script>
+    <script type="module" src="../scripts/Tree.js" defer></script>
+    <script type="module" src="../scripts/settings.js" defer></script>
 </body>
 
 
