@@ -1,18 +1,11 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+// Alec Shashaty & Arzang Kasiri, 2019
 
-'use strict';
-
-
+import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
+import Tree from "./Tree.js";
+import Async from "./asyncFunctions.js";
 
 
 
-
-// when the #savePage button is clicked,
-// stores the current page by setting the key to the
-// page title string (minus the " - Wikipedia" part),
-// and the value to the url.
 let showTrees = document.getElementById('showTrees'),
     pageDisplay = document.getElementById('pageDisplay'),
     timerToggle = document.getElementById('timerToggle'),
@@ -21,6 +14,11 @@ let showTrees = document.getElementById('showTrees'),
     descentButton = document.getElementById('descentButton'),
     descentContainer = document.getElementById("descentContainer");
 
+
+    
+/* -------------  DESCENT BUTTON ------------------  */
+
+// basic hover listeners for descent button
 descentButton.addEventListener("mouseover", function () {
     descentContainer.classList.add("descentContainerOnHover");
 
@@ -30,10 +28,49 @@ descentButton.addEventListener("mouseout", function () {
     descentContainer.classList.remove("descentContainerOnHover");
 });
 
-// temporarily repurposed the descend button for opening the display tree page
-showTrees.addEventListener("click", function () {
-    var tabby;
 
+// descent button toggles page saving on click
+descentButton.addEventListener("click", async function () {
+    
+    // on descent button click, grab the current state of descentToggled,
+    // flip it, then reset it to the new value
+    Async.storageSyncGet('descentToggled').then(result => {
+        let descentToggled = result.descentToggled;
+        descentToggled = !descentToggled;
+        if(!descentToggled) {
+            // reinitialize the start of the tree if session is over
+            Async.storageSyncSet({descentToggled: descentToggled,
+                                  startTree: true,
+                                  currentSession: null
+                                 }); 
+        } else {
+            Async.activeTabQuery().then(tab => {
+                // save the page url and title
+                let currentId = Tree.genTreeId(tab.id,tab.url),
+                    currentUrl = tab.url,
+                    currentTitle = tab.title.replace(' - Wikipedia', '');
+                
+                let newTree = new Tree({id: currentId, title: currentTitle, url: currentUrl});
+                
+                newTree._sessionId = currentId;
+                
+                Async.storageSyncSet({descentToggled: descentToggled,
+                                      startTree: false,
+                                      currentSession: newTree.sessionId,
+                                      [newTree._sessionId]: newTree});
+            });
+           
+        }
+                
+   }); 
+});
+
+/* ------------------------------------------------  */
+
+
+
+// temporary button for opening a page for displaying trees
+showTrees.addEventListener("click", function () {
     chrome.tabs.create(
         {
             'active': true,
@@ -41,29 +78,6 @@ showTrees.addEventListener("click", function () {
         },
         function(tab) {}
     );
-});
-
-descentButton.addEventListener("click", function () {
-
-    chrome.tabs.query({
-        // checking the active tab:
-        'active': true,
-        'currentWindow': true
-    }, function (tabs) {
-        // save the page url and title
-        var url = tabs[0].url,
-            title = tabs[0].title.replace(' - Wikipedia', '');
-        chrome.storage.sync.set({
-            // key: value
-            title: url
-        }, function () {
-            // Prints out the saved url to the console of the popup window
-            // (/not/ to the console of the active tab!)
-            console.log('Value is set to ' + url);
-        });
-        pageDisplay.innerHTML = "Saved! " + title;
-
-    });
 });
 
 

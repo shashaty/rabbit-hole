@@ -17,6 +17,10 @@
   "homepage": "https://github.com/shashaty/rabbit-hole#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "sinon-chrome": "^2.3.2"
+  },
+  "dependencies": {
+    "chrome-extension-async": "^3.3.0"
   }
 }

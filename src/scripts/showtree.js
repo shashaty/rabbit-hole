@@ -1,47 +1,24 @@
-'use strict';
+// Alec Shashaty & Arzang Kasiri, 2019
 
-// var declarations
-/////////////////////////////////
-
-var urlString = window.location.href;
-var url = new URL(urlString);
-var treeName = url.searchParams.get('tree');
-
-
-// class defs
-/////////////////////////////////
-
-class Tree {
-    
-    constructor(name,title,url) {
-        this.name = name;
-        this.root_node = {
-            page: {
-                title: title,
-                url: url
-            },      
-            children: []   
-        };
-    }
-    
-    addChild(child) {
-        this.root_node.children.push(child);
-    }
-}
+import Tree from "./Tree.js";
 
 
 
 /*
-tree json representation:
+TREE object representation:
+{String id, Object root_node}
 
-tree wrapper: {name, root_node}
-tree made up of nodes: {page, children}
+NODE object representation:
+{Object page, Array children}
+
+PAGE object representation:
+{String title, String url}
 */
 
-const testTree = new Tree('example tree','cat','wikipedia.org/cat');
+const testTree = new Tree({id:'example tree', title: 'cat', url: 'wikipedia.org/cat'});
 
-testTree.addChild(new Tree('child 1','child 1',''));
-testTree.addChild(new Tree('child 2','child 2',''));
+testTree.addChild(new Tree({id:'child 1',title:'child 1',url:''}));
+testTree.addChild(new Tree({id:'child 2',title:'child 2',url:''}));
 
 
 function addPageInfo(node, nodeInfo) {
@@ -85,21 +62,109 @@ function addTreeNode(node, nodeContainer) {
     
     }
 
+
+const testUrlString = "798__&__https://en.wikipedia.org/wiki/John_Locke";
+
 // database retrieval
 /////////////////////////////
 
-chrome.storage.local.get([treeName], function (result) {
-    var tree = Object.keys(result).length > 0 ? result : testTree;
+chrome.storage.sync.get(testUrlString, function (result) {
     var treeDiv = document.getElementById("tree_div");
+    
+    var tree = Object.keys(result).length > 0 ? result : testTree;
+    
+    if(tree[testUrlString] === undefined) {
+        treeDiv.innerHTML += '<p style="text-align:center;">no test tree has been saved yet!</p>';
+        throw new ReferenceError('need a tree saved to chrome.storage.sync with key "test"!');
+    }
+    
+    
+    tree = Tree.deserializeTree(tree[testUrlString]);
+    
+    
+    // a very elaborate and space-wasting testing schema for Tree class methods
+    // -------------------------------------------------------
+    let dummyTree5 = { _id: 5,
+                       _sessionId: 123,
+                       _root_node: {
+                            page: {
+                                title: "five",
+                                url: "four.com"
+                            },
+                            parent: null,
+                            children: []
+                       }
+                     };
+    
+    dummyTree5 = Tree.deserializeTree(dummyTree5);
+    
+    let dummyTree4 = { _id: 4,
+                       _sessionId: 123,
+                       _root_node: {
+                           page: {
+                               title: "four",
+                               url: "four.com"
+                           },
+                           parent: null,
+                           children: []
+                       }
+                     };
+    let dummyTree3 = { _id: 3,
+                       _sessionId: 123,
+                       _root_node: {
+                           page: {
+                               title: "three",
+                               url: "three.com"
+                           },
+                           parent: null,
+                           children: [dummyTree4]
+                       }
+                     };  
+    let dummyTree2 = { _id: 2,
+                       _sessionId: 123,
+                       _root_node: {
+                           page: {
+                               title: "two",
+                               url: "two.com"
+                           },
+                           parent: null,
+                           children: []
+                       }
+                     };  
+    let dummyTree1 = { _id: 1,
+                       _sessionId: 123,
+                       _root_node: {
+                           page: {
+                               title: "one",
+                               url: "one.com"
+                           },
+                           parent: null,
+                           children: [dummyTree2, dummyTree3]
+                       }
+                     };
+    dummyTree4._root_node.parent = dummyTree3;
+    dummyTree3._root_node.parent = dummyTree1;
+    dummyTree2._root_node.parent = dummyTree1;
+    
+    // -----------------------------------------
+    
+    
+    let deserializeTest = Tree.deserializeTree(dummyTree1);
+    
+    deserializeTest = Tree.assignParentById({sessionTree: deserializeTest, parentId: 3, newChild: dummyTree5});
 
-    if (tree.root_node) {
-        var treeContainer = document.createElement('ul');
-        var rootContainer = document.createElement('li');
+      
+    let treeToDraw = tree;
+    
+    if (treeToDraw.root_node) { // if data exists
+        let treeContainer = document.createElement('ul');
+        let rootContainer = document.createElement('li');
         treeContainer.appendChild(rootContainer);
            
-        addTreeNode(tree.root_node, rootContainer);
+        
+        addTreeNode(treeToDraw.root_node, rootContainer); // transferring data to html
 
-        treeDiv.appendChild(treeContainer);
+        treeDiv.appendChild(treeContainer); // adding the tree to the page
     }
     else {
         treeDiv.innerHTML += "Doesn't look like you visited any pages on this binge.";

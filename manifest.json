@@ -1,11 +1,12 @@
  {
-     "name": "Rabbit Hole",
+     "name": "rabbit_hole",
      "version": "1.0",
      "description": "An extension that keeps track of Wikipedia rabbit holes.",
-     "permissions": ["activeTab", "declarativeContent", "storage", "tabs"],
+     "permissions": ["activeTab", "contextMenus", "declarativeContent", "storage", "tabs",
+                      "webNavigation"],
      "background": {
-         "scripts": ["./src/scripts/background.js"],
-         "persistent": false
+         "page": "./src/background.html",
+         "persistent": true
      },
      "page_action": {
          "default_popup": "./src/popup/popup.html",
@@ -17,6 +18,12 @@
 
          }
      },
+     "content_scripts": [
+         {
+             "matches": ["http://*.wikipedia.org/*","https://*.wikipedia.org/*"],
+             "js": ["./src/scripts/linkListener.js"]
+         }
+     ],
      "icons": {
          "16": "images/hole_icon16.png",
          "32": "images/hole_icon32.png",

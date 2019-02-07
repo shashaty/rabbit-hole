@@ -1,21 +1,24 @@
-const showtree = require('../src/scripts/showtree.js');
+// Alec Shashaty & Arzang Kasiri, 2019
+
 
 const assert = require('assert');
-
-const afafwfw = new Tree('asdf','fwfwwf','asfwfgh');
-
+const chrome = require('sinon-chrome');
 
 
+// new & improved! now with chrome api!
 describe('testing testing', () => {
     
    it('is this thing on?', () => {
+       chrome.storage.sync.set({testing:'123'});
+       const expected = '123';
        
-       const expected = 'yup';
-       
-       const micCheck = () => {
-         return 'yup';  
-       };
-       
-      assert.equal(micCheck(), expected); 
+       chrome.storage.sync.get('testing',result => {
+            assert.equal(result, expected); 
+        });
+      
    }); 
+    
+    after(() => {
+       chrome.storage.sync.clear(); 
+    });
 });

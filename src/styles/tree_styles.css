@@ -1,23 +1,11 @@
-/* CSS in this file by Philipp Khn from https://codepen.io/philippkuehn/pen/QbrOaN */
+/* CSS in this file by Philipp Kuehn from https://codepen.io/philippkuehn/pen/QbrOaN */
 
 body {
   font-family: sans-serif;
   font-size: 15px;
 }
 
-/*
-4px: 1px;
-$reverse: false;
-*/
 
-.tree {
-/*
-  @if $reverse {
-    transform: rotate(180deg);
-    transform-origin: 50%;
-  }
-*/
-}
 
 .tree ul {
   position: relative;
@@ -104,11 +92,7 @@ $reverse: false;
   color: #333;
   position: relative;
   top: 4px;
-/*
-  @if $reverse {
-    transform: rotate(180deg);
-  }
-*/
+
 }
 
 .tree li div {
@@ -120,11 +104,7 @@ $reverse: false;
   color: #333;
   position: relative;
   top: 4px;
-/*
-  @if $reverse {
-    transform: rotate(180deg);
-  }
-*/
+
 }
 
 .tree li a:hover,
