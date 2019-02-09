@@ -3,7 +3,14 @@
 import Async from './asyncFunctions.js';
 import Tree from './Tree.js';
 
-const linksToProcess = []; // global array for queueing impending links for tracking in sequence
+// testing out object vs array implementation
+const linksToProcess = {}; // global set for queueing impending links for tracking
+// impending links stored as key: value pairs in the form
+// [tabId]: { url,
+//            tabId,
+//            openerTabId, 
+//            openerTabUrl
+//          }
 
 
 
@@ -37,23 +44,67 @@ Async.storageSyncSet({descentToggled: false,
                      });
 
 
+
+
+
 // on page load completion, if the url is a wikipedia link: 
 //  grab the state of the descent button and use it to store pages as appropriate
 chrome.webNavigation.onCompleted.addListener(pageDetails => {
     if(pageDetails.url.includes('.wikipedia.org')) {
+        console.log('web nav complete!', pageDetails.url);
+        
         Async.storageSyncGet(['descentToggled', 'startTree', 'currentSession']).then(result => {
             let toggle = result.descentToggled,
                 startTree = result.startTree,
                 currentSession = result.currentSession;
+
             
-            if(toggle && !startTree) {
-                
-                if(linksToProcess) {
-                    let newLink = linksToProcess.shift();
+            if(toggle && !startTree && Object.keys(linksToProcess).length > 0) {
                     
+                let newLink = linksToProcess[pageDetails.tabId];
+                
+                newLink.url = pageDetails.url; // sometimes pageDetails.url has the properly redirected url
+                
+                // handle redirecting links here, swapping newLink.url for the new url if it does change
+                if(newLink.isRedirect) {
+                    console.log('redirect!');
+
+                    let tabUpdated = false; // simple bool to keep track of whether the tab updates
+                    chrome.tabs.onUpdated.addListener(function tabUpdateHandler(tabId,changeInfo,tab) {
+                                                     
+                            if(changeInfo.url !== undefined && changeInfo.url.includes('.wikipedia.org/')) {
+                                console.log('updated url!',changeInfo.url, changeInfo.status); 
+                
+                                newLink.url = changeInfo.url;
+                                tabUpdated = true;
+                                newPageToTree();
+                                
+                            }
+                            chrome.tabs.onUpdated.removeListener(tabUpdateHandler);
+                    });
+                    
+                    // set timeout after 3 seconds as backup in the case that the tab
+                    // actually does redirect prior to webNavigation.onCompleted firing
+                    
+                    setTimeout(() => {if(!tabUpdated) {newPageToTree();}}, 3000);
+                    
+                    
+                    
+                } else {
+                    // if not a redirected page, just go ahead
+                    newPageToTree();
+                }
+        
+
+        
+            
+                function newPageToTree() {
                     Async.urlTabQuery(newLink.url).then(tab => {
-                        let currentId = Tree.genTreeId(tab.id,tab.url),
-                            currentUrl = tab.url,
+                        console.log('pageDetails', pageDetails);
+                        console.log('newLink', newLink);
+                        console.log('tab from newLink', tab);
+                        let currentId = Tree.genTreeId(tab.id,newLink.url),
+                            currentUrl = newLink.url,
                             currentTitle = tab.title.replace(' - Wikipedia', '');
                         
                         let newTree = new Tree({id: currentId, title: currentTitle, url: currentUrl});
@@ -75,48 +126,22 @@ chrome.webNavigation.onCompleted.addListener(pageDetails => {
                                                                  parentId: parentId,
                                                                  newChild: newTree});
                                 
-                            console.log(currentSession);
+                            console.log('---------------------');
                             
                             // update the session tree in memory
                             Async.storageSyncSet({[currentSession]:sessionTree});
+                        
                         });
                         
                     });
-                }
-                
-            };
+            }
+            }
         });
     }
 });
 
-// event handler for context menu 'open link in new tab'
-const newTabLogger = tab => {    
-        
-    if(tab.url.includes('.wikipedia.org')) {
-        console.log(tab.url);
-        console.log(tab.openerTabId + " opened me!");
-        
-        
-        Async.storageSyncGet('descentToggled').then(result => {
-            if(result.descentToggled) {
-                // tricky workaround to get the url of the tab
-                // that opened this one
-                chrome.tabs.get(tab.openerTabId, openerTab => {
-                    linksToProcess.push({url: tab.url,
-                                         tabId: tab.id,
-                                         openerTabId: tab.openerTabId,
-                                         openerTabUrl: openerTab.url
-                                        });
-                    console.log(linksToProcess); // TEST
-                });
-            }    
-        });
-    }
-        
-    // ensure the function runs only once
-    chrome.tabs.onCreated.removeListener(newTabLogger);
-};
     
+
 
 // listener for taking messages during runtime from content scripts and other
 // extension pages
@@ -124,23 +149,52 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
     console.log("message", message);  
     console.log("sender", sender);
       
-    
-    
-    if(message.eventType === 'contextMenu' && message.linkUrl !== undefined) {
-        // attach a listener to watch for a new wikipedia tab to open
-        chrome.tabs.onCreated.removeListener(newTabLogger);
-        chrome.tabs.onCreated.addListener(newTabLogger);
+ //   let tabLoggerBound = newTabLogger.bind(null,message);
+ 
+    if(message.eventType === 'contextMenu' && 
+       message.linkUrl !== undefined) {
         
-    } else if(message.eventType === 'click' && message.linkUrl !== undefined) {
+        // attach a listener to listen for a new wikipedia tab to open
+        chrome.tabs.onCreated.addListener(function newTabLogger(tab) {
+             if(tab.url.includes('.wikipedia.org')) {
+                    console.log(tab.url);
+                    console.log(tab.openerTabId + " opened me!");
+        
+        
+        
+                    Async.storageSyncGet('descentToggled').then(result => {
+                        if(result.descentToggled) {
+                            // tricky workaround to get the url of the tab
+                            // that opened this one
+                            chrome.tabs.get(tab.openerTabId, openerTab => {
+                                linksToProcess[tab.id] = {url: tab.url,
+                                                          tabId: tab.id,
+                                                          openerTabId: tab.openerTabId,
+                                                          openerTabUrl: openerTab.url,
+                                                          isRedirect: message.isRedirect
+                                                         };
+                                console.log(linksToProcess); // TEST
+                            });
+                    }    
+                });
+            }
+                // ensure the function runs only once
+           chrome.tabs.onCreated.removeListener(newTabLogger);
+            
+        });
+        
+    } else if(message.eventType === 'click' && 
+              message.linkUrl !== undefined) {
         // just push the clicked link to the queue
         
         Async.storageSyncGet('descentToggled').then(result => {
             if(result.descentToggled) {
-                linksToProcess.push({url: message.linkUrl,
+                linksToProcess[sender.tab.id] = {url: message.linkUrl,
                                      tabId: sender.tab.id,
                                      openerTabId: sender.tab.id,
-                                     openerTabUrl: sender.tab.url
-                                    });
+                                     openerTabUrl: sender.tab.url,
+                                     isRedirect: message.isRedirect
+                                    };
                 console.log(linksToProcess); // TEST
             } 
         });

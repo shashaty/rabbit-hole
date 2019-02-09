@@ -26,7 +26,10 @@ yesClear.addEventListener('click', () => {
                               startTree: true,
                               currentSession: null
                              });
+        clearOverlay.classList.remove('makeVisible'); 
     });
+    
+    
 });
 
 noClear.addEventListener('click', () => {

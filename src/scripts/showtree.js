@@ -63,7 +63,8 @@ function addTreeNode(node, nodeContainer) {
     }
 
 
-const testUrlString = "798__&__https://en.wikipedia.org/wiki/John_Locke";
+const testUrlString = "631__&__https://en.wikipedia.org/wiki/Earth#Crust";
+
 
 // database retrieval
 /////////////////////////////

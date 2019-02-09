@@ -19,10 +19,20 @@ class Async {
     
     // takes a string representing a url pattern to match tabs to
     static async urlTabQuery(urlParam) {
+        
+        // remove the section markers in urls that break chrome.tabs.query
+        let strippedUrl = urlParam.replace(/#[\S]*/,''); 
         // get active tabs from url input
-        const tabs = await chrome.tabs.query({url: urlParam, currentWindow: true});
+        const tabs = await chrome.tabs.query({url: strippedUrl});
+
+        if(tabs.length === 0) {
+            throw new ReferenceError('Async.urlTabQuery came up with no results for search param ' 
+                                     + strippedUrl);
+        }
+        
         const tab = tabs[0]; // just pick whichever identical tab comes first
-        return tab;     
+        return tab;    
+        
     }
     
     static async storageSyncSet(obj) {

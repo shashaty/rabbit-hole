@@ -100,7 +100,7 @@ class Tree {
     
     
      /**
-      * basic depth first search to find the proper parent for a child,
+      * basic breadth first search to find the proper parent for a child,
       * then add that child to the parent 
       * @param {Object} idObj
       * @param {Tree} idObj.sessionTree                    
@@ -117,7 +117,7 @@ class Tree {
         
         let childQueue = [sessionTree];
         
-        while(childQueue) {
+        while(childQueue.length > 0) {
             let curr = childQueue.shift();
             try {
                 if(curr._id === parentId) {
