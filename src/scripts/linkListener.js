@@ -13,7 +13,8 @@ for(let i = 0; i < links.length; i++) {
     // when the context menu is opened on a link
     links[i].oncontextmenu = function(e) {
         let redirectLink = e.target.classList.contains('mw-redirect');
-        chrome.runtime.sendMessage({linkUrl: e.target.href, 
+        chrome.runtime.sendMessage({source: 'linkListener.js',
+                                    linkUrl: e.target.href, 
                                     eventType: "contextMenu",
                                     isRedirect: redirectLink
                                    });
@@ -22,7 +23,8 @@ for(let i = 0; i < links.length; i++) {
     // when a link is clicked directly
     links[i].onclick = function(e) {
         let redirectLink = e.target.classList.contains('mw-redirect');
-        chrome.runtime.sendMessage({linkUrl: e.target.href, 
+        chrome.runtime.sendMessage({source: 'linkListener.js',
+                                    linkUrl: e.target.href, 
                                     eventType: "click",
                                     isRedirect: redirectLink
                                    });

@@ -29,6 +29,12 @@ descentButton.addEventListener("mouseout", function () {
 });
 
 
+const sendToggleMessage = toggle => {
+  Async.activeTabQuery().then(tab => {
+      chrome.tabs.sendMessage(tab.id, {source: 'popup.js', descent: toggle});
+  });  
+};
+
 // descent button toggles page saving on click
 descentButton.addEventListener("click", async function () {
     
@@ -37,12 +43,16 @@ descentButton.addEventListener("click", async function () {
     Async.storageSyncGet('descentToggled').then(result => {
         let descentToggled = result.descentToggled;
         descentToggled = !descentToggled;
+        
+        
         if(!descentToggled) {
             // reinitialize the start of the tree if session is over
             Async.storageSyncSet({descentToggled: descentToggled,
                                   startTree: true,
                                   currentSession: null
                                  }); 
+            sendToggleMessage(descentToggled);
+            
         } else {
             Async.activeTabQuery().then(tab => {
                 // save the page url and title
@@ -59,6 +69,8 @@ descentButton.addEventListener("click", async function () {
                                       currentSession: newTree.sessionId,
                                       [newTree._sessionId]: newTree});
             });
+            
+            sendToggleMessage(descentToggled);
            
         }
                 

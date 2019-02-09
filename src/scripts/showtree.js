@@ -63,7 +63,9 @@ function addTreeNode(node, nodeContainer) {
     }
 
 
-const testUrlString = "631__&__https://en.wikipedia.org/wiki/Earth#Crust";
+
+// this is the sessionID string that determines what to pull out of storage
+const testUrlString = "759__&__https://en.wikipedia.org/wiki/Precedent";
 
 
 // database retrieval
@@ -76,7 +78,7 @@ chrome.storage.sync.get(testUrlString, function (result) {
     
     if(tree[testUrlString] === undefined) {
         treeDiv.innerHTML += '<p style="text-align:center;">no test tree has been saved yet!</p>';
-        throw new ReferenceError('need a tree saved to chrome.storage.sync with key "test"!');
+        throw new ReferenceError('need a tree saved to chrome.storage.sync with key ' + testUrlString + " - just reset testUrlString in showtree.js");
     }
     
     
