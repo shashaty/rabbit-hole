@@ -3,7 +3,6 @@
 import Async from './asyncFunctions.js';
 import Tree from './Tree.js';
 
-// testing out object vs array implementation
 const linksToProcess = {}; // global set for queueing impending links for tracking
 // impending links stored as key: value pairs in the form
 // [tabId]: { url,
@@ -11,7 +10,6 @@ const linksToProcess = {}; // global set for queueing impending links for tracki
 //            openerTabId, 
 //            openerTabUrl
 //          }
-
 
 
 // on initial extension install, add this script
@@ -45,12 +43,10 @@ Async.storageSyncSet({descentToggled: false,
 
 
 
-
-
 // on page load completion, if the url is a wikipedia link: 
 //  grab the state of the descent button and use it to store pages as appropriate
 chrome.webNavigation.onCompleted.addListener(pageDetails => {
-    if(pageDetails.url.includes('.wikipedia.org')) {
+    if(pageDetails.url.includes('.wikipedia.org') && !pageDetails.url.includes('/File:')) {
         console.log('web nav complete!', pageDetails.url);
         
         Async.storageSyncGet(['descentToggled', 'startTree', 'currentSession']).then(result => {
@@ -62,7 +58,7 @@ chrome.webNavigation.onCompleted.addListener(pageDetails => {
             
             if(toggle && !startTree && Object.keys(linksToProcess).length > 0) {
                 
-                 chrome.tabs.sendMessage(pageDetails.tabId, {source: 'popup.js', descent:true}); 
+                chrome.tabs.sendMessage(pageDetails.tabId, {source: 'popup.js', descent:true}); 
                 
                 let newLink = linksToProcess[pageDetails.tabId];
                 
@@ -96,8 +92,6 @@ chrome.webNavigation.onCompleted.addListener(pageDetails => {
                                         chrome.tabs.onUpdated.removeListener(tabUpdateHandler);
                                         newPageToTree();
                                         }}, 3000);
-                    
-                    
                     
                 } else {
                     // if not a redirected page, just go ahead
@@ -148,8 +142,6 @@ chrome.webNavigation.onCompleted.addListener(pageDetails => {
     }
 });
 
-    
-
 
 // listener for taking messages during runtime from content scripts and other
 // extension pages
@@ -164,7 +156,7 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
         
             // attach a listener to listen for a new wikipedia tab to open
             chrome.tabs.onCreated.addListener(function newTabLogger(tab) {
-                if(tab.url.includes('.wikipedia.org')) {
+                if(tab.url.includes('.wikipedia.org') && !tab.url.includes('/File:')) {
                     console.log(tab.url);
                     console.log(tab.openerTabId + " opened me!");
         
@@ -205,12 +197,10 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
                                                      isRedirect: message.isRedirect
                                                      };
                     console.log(linksToProcess); // TEST
-                    
-                   
+                              
                 } 
             });
 
-        
         }
     }
 });

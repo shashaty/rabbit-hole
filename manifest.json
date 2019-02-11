@@ -27,7 +27,8 @@
          {
              "matches": ["http://*.wikipedia.org/*","https://*.wikipedia.org/*"],
              "js": ["./src/scripts/linkListener.js",
-                    "./src/scripts/pageDrawer.js"],
+                    "./src/scripts/pageDrawer.js",
+                    "./src/scripts/zoomImgOnHover.js"],
              "css": ["./src/styles/page-drawer-styles.css"]
              
          }
