@@ -116,18 +116,27 @@ button:hover {
 }
 
 .timerContainer {
-    display: none;
+    font-family: "Roboto Mono", monospace;
+    font-size: 20px;
+    margin: auto;
+    width: 50%;
+    margin-top: 10px;
+    text-align: center;
+    background-color: antiquewhite;
+    border-radius: 10%;
+    
 }
 
 #descentContainer {
     
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
     
     margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    
     
 }
 
@@ -135,12 +144,12 @@ button:hover {
 
 .descentContainerOnHover {
     background-image: url(../../images/fire-png-gif--489.gif);
-    background-position: 50% -145%;
-    background-size: 232px;
+    background-position: 50% 150%;
+    background-size: 216px;
     background-repeat: no-repeat;
     
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
     
     margin: auto;
     display: flex;

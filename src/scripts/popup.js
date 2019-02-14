@@ -1,10 +1,9 @@
 // Alec Shashaty & Arzang Kasiri, 2019
 
 import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
-import Tree from "./Tree.js";
-import Async from "./asyncFunctions.js";
-
-
+import Tree from './Tree.js';
+import Async from './asyncFunctions.js';
+import Stopwatch from './descentTimer.js';
 
 let showTrees = document.getElementById('showTrees'),
     pageDisplay = document.getElementById('pageDisplay'),
@@ -13,6 +12,43 @@ let showTrees = document.getElementById('showTrees'),
     timerDisplay = document.getElementById('timerDisplay'),
     descentButton = document.getElementById('descentButton'),
     descentContainer = document.getElementById("descentContainer");
+
+const background = chrome.extension.getBackgroundPage();
+
+
+// stopwatch ---------------------------
+
+let stopwatch;
+
+// on load
+window.addEventListener('load',function() {
+    // set up stopwatch and attach to the window
+    stopwatch = background.backgroundGlobal.stopwatch;
+    stopwatch.window = window;
+    stopwatch.setDisplay(document.querySelector('.timerContainer'));
+    stopwatch.setResults(document.querySelector('.timerDisplay'));
+    stopwatch.print(stopwatch.times);
+    
+    // if the stopwatch was running before window was reopened,
+    // continue running it
+    if(stopwatch.running) {
+        stopwatch.calcBackgroundTime(); // calculates the time elapsed since last runtime
+        stopwatch.step(stopwatch.time);
+    }
+    
+    // attach listeners to debug buttons
+    document.getElementById('stopwatchStart').onclick = () => {stopwatch.start()};
+    document.getElementById('stopwatchStop').onclick = () => {stopwatch.stop()};
+    document.getElementById('stopwatchRestart').onclick = () => {stopwatch.reset();
+                                                             stopwatch.print();};
+});
+
+// on unload, mark the timestamp on background.html and send the new reference
+// back to the background page
+window.addEventListener("unload", function (event) {
+    stopwatch.lastTime = background.performance.now();
+    background.backgroundGlobal.stopwatch = stopwatch;
+}, true);
 
 
     
@@ -30,9 +66,12 @@ descentButton.addEventListener("mouseout", function () {
 
 
 const sendToggleMessage = toggle => {
-  Async.activeTabQuery().then(tab => {
-      chrome.tabs.sendMessage(tab.id, {source: 'popup.js', descent: toggle});
-  });  
+    // grabs all wikipedia tabs and sends a runtime message with new toggle setting
+    Async.allWikiTabQuery().then(tabs => {
+       for(let i = 0; i<tabs.length; i++) {
+           chrome.tabs.sendMessage(tabs[i].id, {source: 'popup.js', descent: toggle});
+       } 
+    });
 };
 
 // descent button toggles page saving on click
@@ -46,6 +85,16 @@ descentButton.addEventListener("click", async function () {
         
         
         if(!descentToggled) {
+            stopwatch.stop();
+            Async.storageSyncGet('currentSession').then(result => {
+                Async.storageSyncGet(result.currentSession).then(session => {
+                    background.console.log(session);
+                    session[result.currentSession].duration = stopwatch.times;
+                    background.console.log(session);
+                    Async.storageSyncSet(session);
+                });
+               
+            });
             // reinitialize the start of the tree if session is over
             Async.storageSyncSet({descentToggled: descentToggled,
                                   startTree: true,
@@ -54,6 +103,8 @@ descentButton.addEventListener("click", async function () {
             sendToggleMessage(descentToggled);
             
         } else {
+            stopwatch.reset();
+            stopwatch.start();
             Async.activeTabQuery().then(tab => {
                 // save the page url and title
                 let currentId = Tree.genTreeId(tab.id,tab.url),
@@ -92,29 +143,3 @@ showTrees.addEventListener("click", function () {
     );
 });
 
-
-// preliminary timer code, to be optimized further:
-// end goal is a visual stopwatch, with a start/stop and reset button.
-var timerToggled = false;
-var startTime = 0;
-var finishTime = 0;
-timerToggle.addEventListener("click", function () {
-    var timerDifference = 0;
-    timerToggled = !timerToggled;
-
-    if (timerToggled) {
-        timerToggle.getElementsByTagName('p')[0].innerHTML = "Stop timer";
-        startTime = Date.now();
-    } else {
-        timerToggle.getElementsByTagName('p')[0].innerHTML = "Start timer";
-        finishTime = Date.now();
-        timerDifference = (finishTime - startTime) / 1000.00;
-        timerDisplay.innerHTML = timerDifference.toString() + " seconds!";
-        startTime = 0;
-        finishTime = 0;
-    }
-
-
-
-
-});

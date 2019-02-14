@@ -35,6 +35,17 @@ class Async {
         
     }
     
+    // grabs all open wikipedia tabs
+    static async allWikiTabQuery() {
+        const tabs = await chrome.tabs.query({url: '*://*.wikipedia.org/*'});
+        
+        if(tabs.length === 0) {
+            throw new ReferenceError('No wikipedia tabs are open right now.');
+        } 
+        
+        return tabs;
+    }
+    
     static async storageSyncSet(obj) {
         await chrome.storage.sync.set(obj);
         

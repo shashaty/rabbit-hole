@@ -2,6 +2,9 @@
 
 import Async from './asyncFunctions.js';
 import Tree from './Tree.js';
+import Stopwatch from './descentTimer.js';
+
+window.backgroundGlobal = {};
 
 const linksToProcess = {}; // global set for queueing impending links for tracking
 // impending links stored as key: value pairs in the form
@@ -10,6 +13,10 @@ const linksToProcess = {}; // global set for queueing impending links for tracki
 //            openerTabId, 
 //            openerTabUrl
 //          }
+
+
+let stopwatch = new Stopwatch();
+window.backgroundGlobal.stopwatch = stopwatch;
 
 
 // on initial extension install, add this script
@@ -204,3 +211,5 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
         }
     }
 });
+
+export default stopwatch;

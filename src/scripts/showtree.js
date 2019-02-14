@@ -65,7 +65,7 @@ function addTreeNode(node, nodeContainer) {
 
 
 // this is the sessionID string that determines what to pull out of storage
-const testUrlString = "759__&__https://en.wikipedia.org/wiki/Prestwich";
+const testUrlString = "155__&__https://en.wikipedia.org/wiki/Italy";
 
 
 // database retrieval
@@ -80,11 +80,10 @@ chrome.storage.sync.get(testUrlString, function (result) {
         treeDiv.innerHTML += '<p style="text-align:center;">no test tree has been saved yet!</p>';
         throw new ReferenceError('need a tree saved to chrome.storage.sync with key ' + testUrlString + " - just reset testUrlString in showtree.js");
     }
-    
-    
+
     tree = Tree.deserializeTree(tree[testUrlString]);
     
-    
+
     // a very elaborate and space-wasting testing schema for Tree class methods
     // -------------------------------------------------------
     let dummyTree5 = { _id: 5,
@@ -168,6 +167,12 @@ chrome.storage.sync.get(testUrlString, function (result) {
         addTreeNode(treeToDraw.root_node, rootContainer); // transferring data to html
 
         treeDiv.appendChild(treeContainer); // adding the tree to the page
+        
+        if(treeToDraw.duration !== undefined) {
+            document.getElementById('durationDisplay').innerHTML = treeToDraw.duration;
+            
+        } else { console.log(treeToDraw);}
+        
     }
     else {
         treeDiv.innerHTML += "Doesn't look like you visited any pages on this binge.";

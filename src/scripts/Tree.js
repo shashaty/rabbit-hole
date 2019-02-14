@@ -152,7 +152,7 @@ class Tree {
                                        url: treeObj._root_node.page.url});
         
             resultTree._sessionId = treeObj._sessionId;
-            
+            if(treeObj.duration !== undefined) {resultTree.duration = treeObj.duration};
 //        this parent code causes an infinite loop
 //
 //            if(treeObj._root_node.parent) {
