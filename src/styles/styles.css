@@ -110,9 +110,8 @@ button:hover {
     
 }
 
-.buttonContainer {
-   
-    
+.genTreeButton {
+    margin: auto;
 }
 
 .timerContainer {

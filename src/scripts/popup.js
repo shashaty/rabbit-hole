@@ -16,6 +16,21 @@ let showTrees = document.getElementById('showTrees'),
 const background = chrome.extension.getBackgroundPage();
 
 
+console.log = toLog => {
+  background.console.log('from popup.js:',toLog);  
+};
+
+
+// easy fix for issues with navigation during loading:
+// just prevent access to the popup if it's not ready!
+Async.activeTabQuery().then(tab => {
+   if(tab.status === 'loading') {
+       alert('looks like the tab is still loading.. give it a sec!');
+       window.close();
+   } 
+});
+
+
 // stopwatch ---------------------------
 
 let stopwatch;
@@ -37,10 +52,10 @@ window.addEventListener('load',function() {
     }
     
     // attach listeners to debug buttons
-    document.getElementById('stopwatchStart').onclick = () => {stopwatch.start()};
-    document.getElementById('stopwatchStop').onclick = () => {stopwatch.stop()};
-    document.getElementById('stopwatchRestart').onclick = () => {stopwatch.reset();
-                                                             stopwatch.print();};
+ //   document.getElementById('stopwatchStart').onclick = () => {stopwatch.start()};
+//    document.getElementById('stopwatchStop').onclick = () => {stopwatch.stop()};
+//    document.getElementById('stopwatchRestart').onclick = () => {stopwatch.reset();
+//                                                             stopwatch.print();};
 });
 
 // on unload, mark the timestamp on background.html and send the new reference
@@ -88,9 +103,10 @@ descentButton.addEventListener("click", async function () {
             stopwatch.stop();
             Async.storageSyncGet('currentSession').then(result => {
                 Async.storageSyncGet(result.currentSession).then(session => {
-                    background.console.log(session);
                     session[result.currentSession].duration = stopwatch.times;
-                    background.console.log(session);
+                    let d = new Date();
+                    session[result.currentSession].timestamp = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+                    console.log(session);
                     Async.storageSyncSet(session);
                 });
                
@@ -131,15 +147,15 @@ descentButton.addEventListener("click", async function () {
 /* ------------------------------------------------  */
 
 
-
-// temporary button for opening a page for displaying trees
-showTrees.addEventListener("click", function () {
-    chrome.tabs.create(
-        {
-            'active': true,
-            'url':"../src/showtree.html?tree=test_text"
-        },
-        function(tab) {}
-    );
-});
+//
+//// temporary button for opening a page for displaying trees
+//showTrees.addEventListener("click", function () {
+//    chrome.tabs.create(
+//        {
+//            'active': true,
+//            'url':"../src/showtree.html?tree=test_text"
+//        },
+//        function(tab) {}
+//    );
+//});
 

@@ -1,8 +1,12 @@
 // Alec Shashaty & Arzang Kasiri, 2019
+// tree structure in this file gratefully adapted from https://codepen.io/philippkuehn/pen/QbrOaN
 
 import Tree from "./Tree.js";
 
 
+const urlParams = new URLSearchParams(window.location.search);
+const queryString = urlParams.get('tree');
+console.log(queryString);
 
 /*
 TREE object representation:
@@ -65,7 +69,7 @@ function addTreeNode(node, nodeContainer) {
 
 
 // this is the sessionID string that determines what to pull out of storage
-const testUrlString = "155__&__https://en.wikipedia.org/wiki/Italy";
+const testUrlString = queryString;
 
 
 // database retrieval
@@ -157,7 +161,10 @@ chrome.storage.sync.get(testUrlString, function (result) {
 
       
     let treeToDraw = tree;
+    let treeTitle = `${treeToDraw.timestamp} ${treeToDraw.title}`;
     
+    document.title = treeTitle;
+    document.getElementById('treeHeader').innerHTML = treeTitle;
     if (treeToDraw.root_node) { // if data exists
         let treeContainer = document.createElement('ul');
         let rootContainer = document.createElement('li');

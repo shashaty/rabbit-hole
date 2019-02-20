@@ -2,15 +2,16 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Test Tree Page</title>
+        <title></title>
         <link href="./styles/tree_styles.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
 
 <div style="border:solid;">
-    <h3>Programmatically Generated Tree</h3>
+    <h3 id='treeHeader'></h3>
 
     <div class="tree" id="tree_div">
+        <!-- tree goes here! -->
     </div>
     <div id='durationDiv' style="background-color:antiquewhite;
                                  width: 20%;
@@ -21,75 +22,7 @@
         <p id="durationDisplay"></p>
     </div>
 </div>
-<div style="border:solid;">
-    <h3>Demo Tree Structure</h3>
 
-        <!-- Planned tree structure -->
-        <div class="tree">
-        <ul>
-            <li class="node" id="node_<title>">
-                <div id="info_<title>">root</div>
-                <ul id="children_<title>">
-                    <li><div>child</div></li>
-
-                    <li class="node" id="node_<title>">
-                        <div id="info_<title>">child</div>
-                        <ul id="children_<title>">
-                            <li><div>child</div></li>
-                            <li><div>child</div></li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </li>
-        </ul>
-        </div>
-
-</div>
-<div style="border:solid;">
-    <h3>Tree from https://codepen.io/philippkuehn/pen/QbrOaN</h3>
-
-    <div class="tree">
-        <ul>
-          <li>
-            <a href="#">Parent</a>
-            <ul>
-              <li>
-                <a href="#">Child</a>
-                <ul>
-                  <li>
-                    <a href="#">Grand Child</a>
-                  </li><li>
-                    <a href="#">Grand Child</a>
-                    <ul>
-                      <li>
-                        <a href="#">Grand Child</a>
-                      </li><li>
-                        <a href="#">Grand Child</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li><li>
-                <a href="#">Child</a>
-                <ul>
-                  <li>
-                    <a href="#">Grand Child</a>
-                    <ul>
-                      <li>
-                        <a href="#">Grand Grand Child</a>
-                      </li>
-                    </ul>
-                  </li><li>
-                    <a href="#">Grand Child</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-    </div>
-</div>
       <script type="module" src="/../node_modules/chrome-extension-async/chrome-extension-async.js" defer></script>
       <script type="module" src="./scripts/Tree.js" defer></script>
       <script type="module" src="./scripts/showtree.js" defer></script>

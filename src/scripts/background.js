@@ -79,14 +79,14 @@ chrome.webNavigation.onCompleted.addListener(pageDetails => {
                     
                     const tabUpdateHandler = (tabId,changeInfo,tab) => {
                         if(changeInfo.url !== undefined && changeInfo.url.includes('.wikipedia.org/')) {
-                                console.log('updated url!',changeInfo.url, changeInfo.status); 
+                            console.log('updated url!',changeInfo.url, changeInfo.status); 
                 
-                                newLink.url = changeInfo.url;
-                                tabUpdated = true;
-                                newPageToTree();
+                            newLink.url = changeInfo.url;
+                            tabUpdated = true;
+                            newPageToTree();
                                 
-                            }
-                            chrome.tabs.onUpdated.removeListener(tabUpdateHandler);
+                        }
+                        chrome.tabs.onUpdated.removeListener(tabUpdateHandler);
                     };
                     
                     chrome.tabs.onUpdated.addListener(tabUpdateHandler);
@@ -212,4 +212,3 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
     }
 });
 
-export default stopwatch;

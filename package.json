@@ -1,6 +1,6 @@
 {
   "name": "rabbit_hole",
-  "version": "1.0.0",
+  "version": "0.0.9",
   "description": "a chrome extension for wikipedia binges",
   "scripts": {
     "test": "./node_modules/.bin/mocha"
@@ -21,6 +21,6 @@
     "sinon-chrome": "^2.3.2"
   },
   "dependencies": {
-    "chrome-extension-async": "^3.3.0"
+    "chrome-extension-async": "^3.3.2"
   }
 }

@@ -95,7 +95,7 @@ class Tree {
     
     // for making unique IDs for every page (might need some TLC :/)
     static genTreeId(tabID,url) {
-        return String(tabID) + '__&__' + url;
+        return String(tabID) + '__rh__' + url;
     }
     
     
@@ -153,6 +153,7 @@ class Tree {
         
             resultTree._sessionId = treeObj._sessionId;
             if(treeObj.duration !== undefined) {resultTree.duration = treeObj.duration};
+            if(treeObj.timestamp !== undefined) {resultTree.timestamp = treeObj.timestamp};
 //        this parent code causes an infinite loop
 //
 //            if(treeObj._root_node.parent) {
