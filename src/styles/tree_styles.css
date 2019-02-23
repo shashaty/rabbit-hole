@@ -1,10 +1,83 @@
 /* CSS in this file by Philipp Kuehn from https://codepen.io/philippkuehn/pen/QbrOaN */
 
 body {
-  font-family: sans-serif;
-  font-size: 15px;
+    background: linear-gradient(rgba(77, 48, 48, 0), #451616);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Roboto Mono", monospace;
+    font-size: 15px;
+    height: 100%;
+    width: 100%;
 }
 
+#treeHeader {
+    text-align: center;
+}
+
+.makeVisible {
+    visibility: visible !important;
+}
+
+#clearOverlay {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#clearConfirmContainer {
+    background-color: cornsilk;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    margin: auto;
+    margin-top: 120px;
+    border-radius: 10px;
+}
+
+#warningText {
+    font-family: "Roboto Mono", monospace;
+    text-align: center;
+    font-size: 12px;
+}
+
+#yesClear, #noClear {
+    display: inline;
+    margin-left: 20px;
+}
+
+
+button {
+    background-color: antiquewhite;
+    display: block;
+    height: 50px;
+    width: 100px;
+    outline: none;
+    border-radius: 20px;
+}
+
+#deleteButton {
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    
+}
+
+@keyframes darkenButton {
+    from {background-color: antiquewhite;}
+    to {background-color: red;}
+}
+
+button:hover {
+    cursor: pointer;
+    animation-name: darkenButton;
+    animation-duration: 6s;
+    
+}
 
 
 .tree ul {
@@ -39,7 +112,7 @@ body {
     position: absolute; 
     top: 0; 
     right: 50%;
-    border-top: 4px solid #ccc;
+    border-top: 4px solid antiquewhite;
     width: 50%; 
     height: 1em;
   }
@@ -47,7 +120,7 @@ body {
 .tree li::after {
     right: auto; 
     left: 50%;
-	  border-left: 4px solid #ccc;
+	  border-left: 4px solid antiquewhite;
   }
 
 .tree li:only-child::after,
@@ -65,7 +138,7 @@ body {
   }
 
 .tree li:last-child::before{
-    border-right: 4px solid #ccc;
+    border-right: 4px solid antiquewhite;
     border-radius: 0 5px 0 0;
   }
 
@@ -78,13 +151,13 @@ body {
 	position: absolute; 
   top: 0; 
   left: 50%;
-	border-left: 4px solid #ccc;
+	border-left: 4px solid antiquewhite;
 	width: 0; 
   height: 1em;
 }
 
 .tree li a {
-	border: 4px solid #ccc;
+	border: 4px solid antiquewhite;
 	padding: .5em .75em;
 	text-decoration: none;
 	display: inline-block;
@@ -96,7 +169,7 @@ body {
 }
 
 .tree li div {
-	border: 4px solid #ccc;
+    background-color: antiquewhite;
 	padding: .5em .75em;
 	text-decoration: none;
 	display: inline-block;
@@ -123,6 +196,7 @@ body {
 
 .tree li div:hover,
 .tree li div:hover+ul li div {
+    cursor: pointer;
 	background: #e9453f;
   color: #fff;
   border: 4px solid #e9453f;

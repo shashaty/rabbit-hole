@@ -39,6 +39,6 @@
          "48": "images/hole_icon48.png",
          "128": "images/hole_icon128.png"
      },
-     "options_page": "./src/options.html",
+     
      "manifest_version": 2
  }

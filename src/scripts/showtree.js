@@ -2,12 +2,35 @@
 // tree structure in this file gratefully adapted from https://codepen.io/philippkuehn/pen/QbrOaN
 
 import Tree from "./Tree.js";
-
+import Async from './asyncFunctions.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const queryString = urlParams.get('tree');
-console.log(queryString);
 
+
+const deleteButton = document.getElementById('deleteButton'),
+      clearOverlay = document.getElementById('clearOverlay'),
+      yesClear = document.getElementById('yesClear'),
+      noClear = document.getElementById('noClear');
+
+
+deleteButton.addEventListener('click', () => {
+    clearOverlay.classList.add('makeVisible');
+});
+
+
+yesClear.addEventListener('click', () => {
+    // clear all storage history
+    Async.storageSyncRemove(queryString).then(result => {
+        clearOverlay.classList.remove('makeVisible'); 
+    });
+    
+    
+});
+
+noClear.addEventListener('click', () => {
+   clearOverlay.classList.remove('makeVisible'); 
+});
 /*
 TREE object representation:
 {String id, Object root_node}
@@ -30,6 +53,9 @@ function addPageInfo(node, nodeInfo) {
     //  - image
     //  - hover over to display the wiki page
     nodeInfo.innerHTML = node.page.title;
+    nodeInfo.addEventListener('click', () => {
+       chrome.tabs.create({active: false, url: node.page.url}, function(tab) {});
+    });
 }
 
 // adding nodes
@@ -81,85 +107,12 @@ chrome.storage.sync.get(testUrlString, function (result) {
     var tree = Object.keys(result).length > 0 ? result : testTree;
     
     if(tree[testUrlString] === undefined) {
-        treeDiv.innerHTML += '<p style="text-align:center;">no test tree has been saved yet!</p>';
+        treeDiv.innerHTML += '<p style="text-align:center;">whoops! looks like we lost that tree :/</p>';
         throw new ReferenceError('need a tree saved to chrome.storage.sync with key ' + testUrlString + " - just reset testUrlString in showtree.js");
     }
 
     tree = Tree.deserializeTree(tree[testUrlString]);
-    
 
-    // a very elaborate and space-wasting testing schema for Tree class methods
-    // -------------------------------------------------------
-    let dummyTree5 = { _id: 5,
-                       _sessionId: 123,
-                       _root_node: {
-                            page: {
-                                title: "five",
-                                url: "four.com"
-                            },
-                            parent: null,
-                            children: []
-                       }
-                     };
-    
-    dummyTree5 = Tree.deserializeTree(dummyTree5);
-    
-    let dummyTree4 = { _id: 4,
-                       _sessionId: 123,
-                       _root_node: {
-                           page: {
-                               title: "four",
-                               url: "four.com"
-                           },
-                           parent: null,
-                           children: []
-                       }
-                     };
-    let dummyTree3 = { _id: 3,
-                       _sessionId: 123,
-                       _root_node: {
-                           page: {
-                               title: "three",
-                               url: "three.com"
-                           },
-                           parent: null,
-                           children: [dummyTree4]
-                       }
-                     };  
-    let dummyTree2 = { _id: 2,
-                       _sessionId: 123,
-                       _root_node: {
-                           page: {
-                               title: "two",
-                               url: "two.com"
-                           },
-                           parent: null,
-                           children: []
-                       }
-                     };  
-    let dummyTree1 = { _id: 1,
-                       _sessionId: 123,
-                       _root_node: {
-                           page: {
-                               title: "one",
-                               url: "one.com"
-                           },
-                           parent: null,
-                           children: [dummyTree2, dummyTree3]
-                       }
-                     };
-    dummyTree4._root_node.parent = dummyTree3;
-    dummyTree3._root_node.parent = dummyTree1;
-    dummyTree2._root_node.parent = dummyTree1;
-    
-    // -----------------------------------------
-    
-    
-    let deserializeTest = Tree.deserializeTree(dummyTree1);
-    
-    deserializeTest = Tree.assignParentById({sessionTree: deserializeTest, parentId: 3, newChild: dummyTree5});
-
-      
     let treeToDraw = tree;
     let treeTitle = `${treeToDraw.timestamp} ${treeToDraw.title}`;
     
@@ -176,7 +129,7 @@ chrome.storage.sync.get(testUrlString, function (result) {
         treeDiv.appendChild(treeContainer); // adding the tree to the page
         
         if(treeToDraw.duration !== undefined) {
-            document.getElementById('durationDisplay').innerHTML = treeToDraw.duration;
+            document.getElementById('durationDisplay').innerHTML = formatDuration(treeToDraw.duration);
             
         } else { console.log(treeToDraw);}
         
@@ -185,3 +138,24 @@ chrome.storage.sync.get(testUrlString, function (result) {
         treeDiv.innerHTML += "Doesn't look like you visited any pages on this binge.";
     }
 });
+
+
+const formatDuration = duration => {
+    let result = '';
+    if(duration[0] > 0) {
+        result += `${duration[0]} hours, `;
+    } else if(duration[0] === 1) {
+        result += `${duration[0]} hour, `;
+    }
+    if(duration[1] > 1) {
+        result += `${duration[1]} minutes, `;
+    } else if(duration[1] === 1) {
+        result += `${duration[1]} minute, `;
+    }
+    if(duration[2] === 1) {
+        result += `${duration[2]} second, ${Math.round(duration[3])} ms`;
+    } else {
+        result += `${duration[2]} seconds, ${Math.round(duration[3])} ms`;
+    }
+    return result;
+};

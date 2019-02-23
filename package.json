@@ -3,7 +3,7 @@
   "version": "0.0.9",
   "description": "a chrome extension for wikipedia binges",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha  --require @babel/polyfill --require @babel/register"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,11 @@
   },
   "homepage": "https://github.com/shashaty/rabbit-hole#readme",
   "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "sinon-chrome": "^2.3.2"

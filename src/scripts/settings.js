@@ -12,7 +12,6 @@ const clearButton = document.getElementById('clearButton'),
 
 
 clearButton.addEventListener('click', () => {
-    console.log('sup');
     clearOverlay.classList.add('makeVisible');
 });
 

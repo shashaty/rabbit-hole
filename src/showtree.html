@@ -7,9 +7,24 @@
     </head>
     <body>
 
-<div style="border:solid;">
+<div class='wrapper'>
     <h3 id='treeHeader'></h3>
-
+    <button id='deleteButton'>delete</button>
+    <div id="clearOverlay">
+            <div class="buttonContainer" id="clearConfirmContainer">
+                <p id="warningText">are you sure you wanna do that?</p>
+                <button id="yesClear">
+                    <p class="buttonText">
+                        yeah
+                    </p>
+                </button>
+                <button id="noClear">
+                    <p class="buttonText">
+                        nah
+                    </p>
+                </button>
+            </div>
+        </div>
     <div class="tree" id="tree_div">
         <!-- tree goes here! -->
     </div>
@@ -24,6 +39,7 @@
 </div>
 
       <script type="module" src="/../node_modules/chrome-extension-async/chrome-extension-async.js" defer></script>
+      <script type="module" src="./scripts/asyncFunctions.js" defer></script>
       <script type="module" src="./scripts/Tree.js" defer></script>
       <script type="module" src="./scripts/showtree.js" defer></script>
   </body>

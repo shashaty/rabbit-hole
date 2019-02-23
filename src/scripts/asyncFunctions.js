@@ -8,7 +8,7 @@ import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
 // 
 // feel free to add more! :^) 
 class Async {
-    
+
     // grabs the currently active tab
     static async activeTabQuery() {   
         // Query the tabs and continue once we have the result
@@ -68,6 +68,10 @@ class Async {
             
         }
         
+    }
+    
+    static async storageSyncRemove(keys) {
+        await chrome.storage.sync.remove(keys);
     }
     
     // clears all storage
