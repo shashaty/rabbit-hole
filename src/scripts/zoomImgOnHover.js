@@ -1,12 +1,8 @@
+// zoomImgOnHover.js
 // Alec Shashaty & Arzang Kasiri, 2019
-
-
 // content script for making a preview panel for zooming in on images without opening a new link
 
-
-
 let images = document.querySelectorAll('a.image'); // grab all images on the page
-
 
 function createAndStyleFrames() {  
     for(let i = 0; i < images.length; i++) {
@@ -76,10 +72,8 @@ function createAndStyleFrames() {
 
         // add iframe preview to the link's parent container
         images[i].parentNode.appendChild(iframePreview);
-       
     }
 }
-
 
 // run the script
 createAndStyleFrames();

@@ -1,3 +1,4 @@
+// Stopwatch.js
 // Alec Shashaty & Arzang Kasiri, 2019
 
 // code in this file by Billy Brown,
@@ -10,16 +11,11 @@ class Stopwatch {
         this.lastTime = this.timeSource.performance.now();
         this.running = false;
         this.display = undefined;
-        this.results = undefined;
         this.reset();
     }
     
     setDisplay(display) {
         this.display = display;
-    }
-    
-    setResults(results) {
-        this.results = results;
     }
     
     reset() {
@@ -73,7 +69,7 @@ class Stopwatch {
             this.times[1] += 1;
             this.times[2] -= 60;
         }
-        // Hours are 50 minutes
+        // Hours are 60 minutes
         if(this.times[1] >= 60) {
            this.times[0] += 1;
            this.times[1] -= 60;
@@ -108,8 +104,5 @@ function pad0(value, count) {
         result = '0' + result;
     return result;
 }
-
-
-
 
 export default Stopwatch;

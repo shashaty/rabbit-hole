@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Rabbit Hole</title>
@@ -25,63 +24,27 @@
             </div>
         </div>
 
-
-        
-
-<!--
-    <div class="buttonContainer" id='showTreesContainer'>
-        <button id="showTrees">
-            <p class="buttonText">
-                show trees
-            </p>
-        </button>
-    </div>
--->
-
     <div class="buttonContainer timerContainer">
-        <!--    contains dynamic stopwatch instance    -->
+<!--            contains dynamic stopwatch instance    -->
     </div>
-    
-    <div class="buttonContainer timerDisplay">
-<!--
-        <p style="display: inline">stopwatch debug tools:</p>
-        <nav class="controls">
-			<a href="#" id="stopwatchStart" onClick="stopwatch.start();">Start</a>
-			<a href="#" id="stopwatchStop" onClick="stopwatch.stop();">Stop</a>
-			<a href="#" id="stopwatchRestart" onClick="stopwatch.restart();">Restart</a>
-		</nav>
--->
-    </div>
-
-
-               <p id="pageDisplay">
-        <!-- test area for dynamic page name insertion -->
-               </p>
-
-
-
         <div id="homeDiv" class="clickableDiv currentTab">
             <img id="holeIcon" src="../../images/hole_1f573.png">
         </div>
-
         <a href="./trees.html">
             <div id="treesDiv" class="clickableDiv">
                 <img id="treeIcon" src="../../images/branch.png">
             </div>
         </a>
-
         <a href="./settings.html">
             <div id="settingsDiv" class="clickableDiv">
                 <img id="settingsIcon" src="../../images/gear_2699.png">
             </div>
         </a>
-       
         <script type="module" src="/../../node_modules/chrome-extension-async/chrome-extension-async.js" defer></script>
-        <script type="module" src="../scripts/asyncFunctions.js" defer></script>
-         <script type="module" src="../scripts/descentTimer.js" defer></script>
+        <script type="module" src="../scripts/Async.js" defer></script>
+        <script type="module" src="../scripts/Stopwatch.js" defer></script>
         <script type="module" src="../scripts/Tree.js" defer></script>
         <script type="module" src="../scripts/popup.js" defer></script>
     </div>
 </body>
-
 </html>

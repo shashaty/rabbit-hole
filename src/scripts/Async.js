@@ -1,14 +1,11 @@
+// Async.js
 // Alec Shashaty & Arzang Kasiri, 2019
-
 
 import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
 
-
 // class with static methods to organize & wrap all asynchronous chrome api function calls
-// 
 // feel free to add more! :^) 
 class Async {
-
     // grabs the currently active tab
     static async activeTabQuery() {   
         // Query the tabs and continue once we have the result
@@ -19,7 +16,6 @@ class Async {
     
     // takes a string representing a url pattern to match tabs to
     static async urlTabQuery(urlParam) {
-        
         // remove the section markers in urls that break chrome.tabs.query
         let strippedUrl = urlParam.replace(/#[\S]*/,''); 
         // get active tabs from url input
@@ -32,7 +28,6 @@ class Async {
         
         const tab = tabs[0]; // just pick whichever identical tab comes first
         return tab;    
-        
     }
     
     // grabs all open wikipedia tabs
@@ -42,13 +37,11 @@ class Async {
         if(tabs.length === 0) {
             throw new ReferenceError('No wikipedia tabs are open right now.');
         } 
-        
         return tabs;
     }
     
     static async storageSyncSet(obj) {
         await chrome.storage.sync.set(obj);
-        
     }
     
     /**
@@ -64,10 +57,7 @@ class Async {
             return new Promise((resolve, reject) => {
                chrome.storage.sync.get(resolve); 
             });
-            
-            
         }
-        
     }
     
     static async storageSyncRemove(keys) {
@@ -79,8 +69,5 @@ class Async {
         await chrome.storage.sync.clear();
     }
 }
-
-
-
 
 export default Async;

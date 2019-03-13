@@ -1,12 +1,8 @@
+// Tree.js
 // Alec Shashaty & Arzang Kasiri, 2019
-
-
-
 // takes an object literal with three properties: id, title, & url
 
-
 class Tree {
-    
     constructor(treeObj) {
         this._id = treeObj.id;
         this._sessionId = null;
@@ -72,7 +68,6 @@ class Tree {
         } else {
             throw new TypeError("Tree.setParent takes a Tree instance as a parameter!");
         }
-        
     }
     
     // takes a Tree object
@@ -82,7 +77,6 @@ class Tree {
         } else {
             throw new TypeError("Tree.addChild takes a Tree instance as a parameter!");
         }
-        
     }
     
     // basic logging function for testing
@@ -93,9 +87,13 @@ class Tree {
     
     // -------------------- STATIC METHODS -------------------------
     
-    // for making unique IDs for every page (might need some TLC :/)
-    static genTreeId(tabID,url) {
-        return String(tabID) + '__rh__' + url;
+    // for making unique IDs for every page 
+    static genTreeId() {
+
+        return '__rh__xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
     }
     
     
@@ -134,10 +132,7 @@ class Tree {
             for(let i = 0; i<curr._root_node.children.length; i++) {
                 childQueue.push(curr._root_node.children[i]);
             }
-            
         }
-        
-        
         throw new ReferenceError('parent not found!');
     }
     
@@ -163,15 +158,11 @@ class Tree {
             for(let i=0; i < treeObj._root_node.children.length; i++) {
                 resultTree.addChild(Tree.deserializeTree(treeObj._root_node.children[i]));
             }
-        
-            return resultTree;
-            
+            return resultTree; 
         } else {
-            
             return null;
         }
     }
 }
-
 
 export default Tree;

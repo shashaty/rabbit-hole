@@ -1,9 +1,10 @@
+// popup.js
 // Alec Shashaty & Arzang Kasiri, 2019
 
 import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
 import Tree from './Tree.js';
-import Async from './asyncFunctions.js';
-import Stopwatch from './descentTimer.js';
+import Async from './Async.js';
+import Stopwatch from './Stopwatch.js';
 
 let showTrees = document.getElementById('showTrees'),
     pageDisplay = document.getElementById('pageDisplay'),
@@ -41,7 +42,6 @@ window.addEventListener('load',function() {
     stopwatch = background.backgroundGlobal.stopwatch;
     stopwatch.window = window;
     stopwatch.setDisplay(document.querySelector('.timerContainer'));
-    stopwatch.setResults(document.querySelector('.timerDisplay'));
     stopwatch.print(stopwatch.times);
     
     // if the stopwatch was running before window was reopened,
@@ -50,12 +50,6 @@ window.addEventListener('load',function() {
         stopwatch.calcBackgroundTime(); // calculates the time elapsed since last runtime
         stopwatch.step(stopwatch.time);
     }
-    
-    // attach listeners to debug buttons
- //   document.getElementById('stopwatchStart').onclick = () => {stopwatch.start()};
-//    document.getElementById('stopwatchStop').onclick = () => {stopwatch.stop()};
-//    document.getElementById('stopwatchRestart').onclick = () => {stopwatch.reset();
-//                                                             stopwatch.print();};
 });
 
 // on unload, mark the timestamp on background.html and send the new reference
@@ -65,8 +59,6 @@ window.addEventListener("unload", function (event) {
     background.backgroundGlobal.stopwatch = stopwatch;
 }, true);
 
-
-    
 /* -------------  DESCENT BUTTON ------------------  */
 
 // basic hover listeners for descent button
@@ -80,13 +72,18 @@ descentButton.addEventListener("mouseout", function () {
 });
 
 
-const sendToggleMessage = toggle => {
+const sendToggleMessage = (toggle, parentId) => {
     // grabs all wikipedia tabs and sends a runtime message with new toggle setting
     Async.allWikiTabQuery().then(tabs => {
        for(let i = 0; i<tabs.length; i++) {
-           chrome.tabs.sendMessage(tabs[i].id, {source: 'popup.js', descent: toggle});
+           chrome.tabs.sendMessage(tabs[i].id, {source: 'popup.js', 
+                                                descent: toggle});
        } 
     });
+    
+    chrome.runtime.sendMessage({source: 'popup.js',
+                                descent: toggle,
+                                parentId: parentId});
 };
 
 // descent button toggles page saving on click
@@ -97,7 +94,6 @@ descentButton.addEventListener("click", async function () {
     Async.storageSyncGet('descentToggled').then(result => {
         let descentToggled = result.descentToggled;
         descentToggled = !descentToggled;
-        
         
         if(!descentToggled) {
             stopwatch.stop();
@@ -116,14 +112,14 @@ descentButton.addEventListener("click", async function () {
                                   startTree: true,
                                   currentSession: null
                                  }); 
-            sendToggleMessage(descentToggled);
+            sendToggleMessage(descentToggled, null);
             
         } else {
             stopwatch.reset();
             stopwatch.start();
             Async.activeTabQuery().then(tab => {
                 // save the page url and title
-                let currentId = Tree.genTreeId(tab.id,tab.url),
+                let currentId = Tree.genTreeId(),
                     currentUrl = tab.url,
                     currentTitle = tab.title.replace(' - Wikipedia', '');
                 
@@ -135,27 +131,10 @@ descentButton.addEventListener("click", async function () {
                                       startTree: false,
                                       currentSession: newTree.sessionId,
                                       [newTree._sessionId]: newTree});
-            });
-            
-            sendToggleMessage(descentToggled);
-           
-        }
                 
+                sendToggleMessage(descentToggled, currentId); 
+            });
+        }       
    }); 
 });
-
-/* ------------------------------------------------  */
-
-
-//
-//// temporary button for opening a page for displaying trees
-//showTrees.addEventListener("click", function () {
-//    chrome.tabs.create(
-//        {
-//            'active': true,
-//            'url':"../src/showtree.html?tree=test_text"
-//        },
-//        function(tab) {}
-//    );
-//});
 
