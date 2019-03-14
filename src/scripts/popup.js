@@ -5,6 +5,7 @@ import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
 import Tree from './Tree.js';
 import Async from './Async.js';
 import Stopwatch from './Stopwatch.js';
+import OpenTab from './OpenTab.js';
 
 let showTrees = document.getElementById('showTrees'),
     pageDisplay = document.getElementById('pageDisplay'),
@@ -15,10 +16,13 @@ let showTrees = document.getElementById('showTrees'),
     descentContainer = document.getElementById("descentContainer");
 
 const background = chrome.extension.getBackgroundPage();
-
+const bgRef = background.backgroundGlobal.bg;
 
 console.log = toLog => {
   background.console.log('from popup.js:',toLog);  
+};
+console.error = toError => {
+    background.console.error('from popup.js:',toError);
 };
 
 
@@ -132,6 +136,14 @@ descentButton.addEventListener("click", async function () {
                                       currentSession: newTree.sessionId,
                                       [newTree._sessionId]: newTree});
                 
+                bgRef.openTabs[tab.id] = new OpenTab({
+                    url: currentUrl,
+                    openerTabId: null,
+                    parentId: null,
+                    rhId: currentId,
+                    isRedirect: false
+                });
+                    
                 sendToggleMessage(descentToggled, currentId); 
             });
         }       

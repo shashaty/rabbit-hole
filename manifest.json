@@ -7,10 +7,10 @@
                      "declarativeContent", 
                      "storage", 
                      "tabs", 
-                     "*://*.wikipedia.org/*",
+                     "*://*.wikipedia.org/wiki*",
                      "webNavigation"],
      "background": {
-         "page": "./src/background.html",
+         "page": "./src/backgroundPage.html",
          "persistent": true
      },
      "page_action": {
@@ -25,8 +25,9 @@
      },
      "content_scripts": [
          {
-             "matches": ["http://*.wikipedia.org/*","https://*.wikipedia.org/*"],
-             "js": ["./src/scripts/linkListener.js",
+             "matches": ["http://*.wikipedia.org/wiki*","https://*.wikipedia.org/wiki*"],
+             "js": ["./src/scripts/historyListener.js",
+                    "./src/scripts/linkListener.js",
                     "./src/scripts/pageDrawer.js",
                     "./src/scripts/zoomImgOnHover.js"],
              "css": ["./src/styles/page-drawer-styles.css"]
