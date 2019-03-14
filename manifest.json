@@ -26,10 +26,10 @@
      "content_scripts": [
          {
              "matches": ["http://*.wikipedia.org/wiki*","https://*.wikipedia.org/wiki*"],
-             "js": ["./src/scripts/historyListener.js",
-                    "./src/scripts/linkListener.js",
-                    "./src/scripts/pageDrawer.js",
-                    "./src/scripts/zoomImgOnHover.js"],
+             "js": ["./src/scripts/content_scripts/historyListener.js",
+                    "./src/scripts/content_scripts/linkListener.js",
+                    "./src/scripts/content_scripts/pageDrawer.js",
+                    "./src/scripts/content_scripts/zoomImgOnHover.js"],
              "css": ["./src/styles/page-drawer-styles.css"]
              
          }

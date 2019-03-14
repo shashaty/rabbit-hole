@@ -2,7 +2,7 @@
 
 const chrome = require('sinon-chrome');
 import {assert} from 'chai';
-import Async from '../src/scripts/Async.js';
+import Async from '../src/scripts/classes/Async.js';
 
 // pretty broken right now :/
 describe('storage', () => {

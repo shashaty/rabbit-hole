@@ -1,11 +1,11 @@
 // popup.js
 // Alec Shashaty & Arzang Kasiri, 2019
 
-import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
-import Tree from './Tree.js';
-import Async from './Async.js';
-import Stopwatch from './Stopwatch.js';
-import OpenTab from './OpenTab.js';
+import('/../../../node_modules/chrome-extension-async/chrome-extension-async.js');
+import Tree from '../classes/Tree.js';
+import Async from '../classes/Async.js';
+import Stopwatch from '../classes/Stopwatch.js';
+import OpenTab from '../classes/OpenTab.js';
 
 let showTrees = document.getElementById('showTrees'),
     pageDisplay = document.getElementById('pageDisplay'),

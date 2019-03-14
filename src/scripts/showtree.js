@@ -2,8 +2,8 @@
 // Alec Shashaty & Arzang Kasiri, 2019
 // tree structure in this file gratefully adapted from https://codepen.io/philippkuehn/pen/QbrOaN
 
-import Tree from './Tree.js';
-import Async from './Async.js';
+import Tree from './classes/Tree.js';
+import Async from './classes/Async.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const queryString = urlParams.get('tree');

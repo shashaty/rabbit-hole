@@ -1,7 +1,7 @@
 // Async.js
 // Alec Shashaty & Arzang Kasiri, 2019
 
-import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
+import('/../../../node_modules/chrome-extension-async/chrome-extension-async.js');
 
 // class with static methods to organize & wrap all asynchronous chrome api function calls
 // feel free to add more! :^) 

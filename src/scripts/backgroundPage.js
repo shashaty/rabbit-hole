@@ -1,11 +1,11 @@
 // backgroundPage.js
 // Alec Shashaty & Arzang Kasiri, 2019
 
-import Async from './Async.js';
-import Tree from './Tree.js';
-import Stopwatch from './Stopwatch.js';
-import OpenTab from './OpenTab.js';
-import Background from './Background.js';
+import Async from './classes/Async.js';
+import Tree from './classes/Tree.js';
+import Stopwatch from './classes/Stopwatch.js';
+import OpenTab from './classes/OpenTab.js';
+import Background from './classes/Background.js';
 
 const bg = new Background();
 let stopwatch = new Stopwatch();

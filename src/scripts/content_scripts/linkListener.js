@@ -1,6 +1,5 @@
 // linkListener.js
 // Alec Shashaty & Arzang Kasiri, 2019
-
 // content script for listening for all link clicks on a wikipedia page
 // as well as for context menu opening (for 'Open in new tab' clicks)---
 // sends a global runtime message to communicate the link and the click type

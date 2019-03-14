@@ -2,8 +2,6 @@
 // Alec Shashaty & Arzang Kasiri, 2019
 // content script for adding visuals to the wikipedia page itself
 
-
-
 let content = document.getElementById('content');
 
 let statusDiv = document.createElement('div');

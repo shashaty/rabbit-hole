@@ -1,9 +1,9 @@
 // settings.js
 // Alec Shashaty & Arzang Kasiri, 2019
 
-import('/../../node_modules/chrome-extension-async/chrome-extension-async.js');
-import Tree from "./Tree.js";
-import Async from "./Async.js";
+import('/../../../node_modules/chrome-extension-async/chrome-extension-async.js');
+import Tree from '../classes/Tree.js';
+import Async from '../classes/Async.js';
 
 const clearButton = document.getElementById('clearButton'),
       clearOverlay = document.getElementById('clearOverlay'),
