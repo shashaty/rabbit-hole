@@ -1,6 +1,6 @@
  {
      "name": "rabbit_hole",
-     "version": "0.0.9",
+     "version": "0.7.0",
      "description": "An extension that keeps track of Wikipedia rabbit holes.",
      "permissions": ["activeTab", 
                      "contextMenus", 
