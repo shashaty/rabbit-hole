@@ -12,12 +12,12 @@ const linkTracker = (e, eventType) => {
         // if the link has an nested <em> or <i> tag: grab the parent <a> tag
         target = target.parentElement;
     }
-    let redirectLink = target.classList.contains('mw-redirect');
+    let isRedirect = target.classList.contains('mw-redirect');
     chrome.runtime.sendMessage({
         source: 'linkListener.js',
         linkUrl: target.href,
         eventType: eventType,
-        isRedirect: redirectLink
+        isRedirect: isRedirect
     });    
 }
 

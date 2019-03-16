@@ -26,6 +26,7 @@
     "sinon-chrome": "^2.3.2"
   },
   "dependencies": {
+    "blueimp-load-image": "^2.20.1",
     "chrome-extension-async": "^3.3.2"
   }
 }

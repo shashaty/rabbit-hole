@@ -47,15 +47,12 @@ chrome.webNavigation.onCompleted.addListener(pageDetails => {
             bg.openTabs[pageDetails.tabId].getHistoryByUrl(pageDetails.url);
         }
     }
-    
 });
 
 // listener for taking messages during runtime from content scripts and other
 // extension pages
-chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {
-    console.log("message", message);  
-    console.log("sender", sender);
-      
+chrome.runtime.onMessage.addListener((message,sender,sendResponse) => {    
+    console.log("message: ", message);
     if(message.source === 'linkListener.js') {
         bg.linkListenerHandler(message,sender,sendResponse);
     } else if(message.source === 'popup.js') {

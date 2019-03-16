@@ -26,10 +26,12 @@
      "content_scripts": [
          {
              "matches": ["http://*.wikipedia.org/wiki*","https://*.wikipedia.org/wiki*"],
-             "js": ["./src/scripts/content_scripts/historyListener.js",
+             "js": ["node_modules/blueimp-load-image/js/load-image.all.min.js",
+                    "./src/scripts/content_scripts/historyListener.js",
                     "./src/scripts/content_scripts/linkListener.js",
                     "./src/scripts/content_scripts/pageDrawer.js",
-                    "./src/scripts/content_scripts/zoomImgOnHover.js"],
+                    "./src/scripts/content_scripts/zoomImgOnHover.js"
+                   ],
              "css": ["./src/styles/page-drawer-styles.css"]
              
          }
@@ -40,6 +42,8 @@
          "48": "images/hole_icon48.png",
          "128": "images/hole_icon128.png"
      },
-     
+     "web_accessible_resources": [
+         "images/hole_icon128.png"
+     ],
      "manifest_version": 2
  }

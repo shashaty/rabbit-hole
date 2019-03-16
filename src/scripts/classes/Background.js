@@ -29,7 +29,7 @@ class Background {
     }
     
     async newPageToTree(newLink, pageDetails, stored) {
-        Async.urlTabQuery(newLink.url).then(tab => {
+        Async.urlTabQuery(newLink.url.replace(/#[\S]*/,'')).then(tab => {
             let currentSession = stored.currentSession;
             console.log('newLink', newLink);
             
@@ -145,28 +145,37 @@ class Background {
         
         } else if(message.eventType === 'click' && 
                   message.linkUrl !== undefined) {
-            // just push the clicked link to the queue
             
+            
+                            
+            // just push the clicked link to the queue
             Async.storageSyncGet('descentToggled').then(result => {
                 if(result.descentToggled) {
-                    let parentId = null;
-                    if(this.openTabs.hasOwnProperty(sender.tab.id)) {
-                        parentId = this.openTabs[sender.tab.id].currId;
-                    } else {
-                        parentId = this.parentIdInit;
+                    let strippedUrl = message.linkUrl.replace(/#[\S]*/,''); 
+                    let strippedCurrUrl = this.openTabs[sender.tab.id].currUrl.replace(/#[\S]*/,'');
+                    if(strippedUrl !== strippedCurrUrl) {
+                        let parentId = null;
+                        if(this.openTabs.hasOwnProperty(sender.tab.id)) {
+                            parentId = this.openTabs[sender.tab.id].currId;
+                        } else {
+                            parentId = this.parentIdInit;
+                        }
+                    
+                        this.openTabs[sender.tab.id].pushHistory({
+                            url: message.linkUrl,
+                            openerTabId: sender.tab.id,
+                            parentId: parentId,
+                            rhId: Tree.genTreeId(),
+                            isRedirect: message.isRedirect
+                        });
                     }
-                    this.openTabs[sender.tab.id].pushHistory({
-                        url: message.linkUrl,
-                        openerTabId: sender.tab.id,
-                        parentId: parentId,
-                        rhId: Tree.genTreeId(),
-                        isRedirect: message.isRedirect
-                    });
                 } 
             });
+       
         } else {
             throw new ReferenceError("message.linkUrl is undefined!");
         }
+        
         
     }   
 }

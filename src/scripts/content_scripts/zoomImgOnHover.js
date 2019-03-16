@@ -2,79 +2,83 @@
 // Alec Shashaty & Arzang Kasiri, 2019
 // content script for making a preview panel for zooming in on images without opening a new link
 
-let images = document.querySelectorAll('a.image'); // grab all images on the page
+const exif = {loadImage:loadImage}; // loadImage library loaded in from manifest.json
+main();
 
-function createAndStyleFrames() {  
+function main() {
+    const images = document.querySelectorAll('a.image'); // grab all images on the page
     for(let i = 0; i < images.length; i++) {
-        
-        // for each image, make an iframe to host the larger preview image
-        let iframePreview = document.createElement('iframe'),
-            iframeWidth = '500px',
-            iframeHeight = '500px';
-        
-        iframePreview.src = images[i].href;
-        iframePreview.width = iframeWidth;
-        iframePreview.height = iframeHeight;
-        iframePreview.style.position = 'absolute';
-        iframePreview.style.display = 'none';
-        iframePreview.style.right = '160px'; // TODO: implement a more responsive display for the preview
-
-        // on iframe load,
-        iframePreview.addEventListener('load', function firstLoad() {
-            
-            // grab the full image link from the loaded document
-            let subDocument = iframePreview.contentDocument,
-                documentBody = subDocument.querySelector('body'),
-                fullImageLinkDiv = subDocument.querySelector('div.fullImageLink'),
-                fullImageLink = fullImageLinkDiv.children[0].href;
-
-            
-            // wipe the iframe document body of all content for a clean slate
-            while(documentBody.firstChild) {
-                documentBody.removeChild(documentBody.firstChild);
+        images[i].children[0].addEventListener('mouseover', () => {
+            // has this image not been moused over before?
+            if(images[i].parentNode.querySelectorAll('canvas.rhPreview').length === 0) {
+                // turn global cursor into a loading bubble until the full image is rendered
+                document.querySelector('html').classList.add('wait');
+                // make the iframe
+                iframeGen(images[i]);
+            } else {
+                // if it has, just display the preloaded preview image
+                images[i].parentNode.querySelector('canvas.rhPreview').style.display = 'block';
             }
-            
-            // make a new image tag from the saved full image link and add it to the iframe
-            // as its new sole element
-            let newImageTag = document.createElement('img');
-            newImageTag.src = fullImageLink;
-            
-            documentBody.style.position = 'relative';
-            documentBody.style.height = '0';
-
-            newImageTag.style.position = 'absolute';
-            newImageTag.style.width = '100%';
-            
-            newImageTag.style.top = '0';
-            newImageTag.style.left = '0';
-            
-            documentBody.appendChild(newImageTag);
-            
-            
-            // on hover preview definition
-            images[i].children[0].addEventListener('mouseover', () => {
-                iframePreview.style.display = 'block';
-                 
-                // hacky way of resetting the iframe's height & width to match the 
-                // size of the embedded image by grabbing the image's computed width & height
-                iframePreview.width = String(newImageTag.offsetWidth) + 'px';
-                iframePreview.height = String(newImageTag.offsetHeight) + 'px';
-                 
-            });
-            
-            images[i].children[0].addEventListener('mouseout', () => {
-                iframePreview.style.display = 'none';
-            });
-
-           iframePreview.removeEventListener('load', firstLoad); 
-            
         });
-
-        // add iframe preview to the link's parent container
-        images[i].parentNode.appendChild(iframePreview);
     }
 }
 
-// run the script
-createAndStyleFrames();
 
+function iframeGen(image) {
+    let iframePreview = document.createElement('iframe');
+    iframePreview.src = image.href;
+    iframePreview.style.display = 'none';
+    
+    // on iframe load,
+    iframePreview.addEventListener('load', e => {iframeLoad(e,image)});
+
+    // add iframe preview to the link's parent container
+    image.parentNode.appendChild(iframePreview);
+}
+
+function iframeLoad(e, image) {
+    let iframePreview = e.target;
+    // grab the full image link from the loaded document
+    let subDocument = iframePreview.contentDocument,
+        documentBody = subDocument.querySelector('body'),
+        fullImageLinkDiv = subDocument.querySelector('div.fullImageLink'),
+        fullImageLink = fullImageLinkDiv.children[0].href;
+    
+    fetchImagePreview(image, fullImageLink);
+    
+    iframePreview.removeEventListener('load', iframeLoad); 
+}
+
+function fetchImagePreview(image, fullImageLink) {
+    let newImageCSS = {
+        'position': 'fixed',
+        'top': '50%',
+        'left': '50%',
+        'width': 'auto',
+        'height': 'auto',
+        'max-width': '500px',
+        'max-height': '500px',
+        'transform': 'translate(-50%,-50%)',
+        'object-fit': 'contain'
+    };
+    
+    exif.loadImage(
+        fullImageLink,
+        function (img) {
+            if(img.type === "error") {
+                console.log("Error loading image " + fullImageLink);
+            } else {
+                for(let i in newImageCSS) { img.style[i] = newImageCSS[i]; };
+                img.classList.add('rhPreview');
+                
+                image.parentNode.appendChild(img);
+                image.children[0].addEventListener('mouseout', () => {
+                    img.style.display = 'none';
+                });
+            }
+        },
+        // fixing EXIF orientation...
+        {orientation: true}
+    );           
+    document.querySelector('html').classList.remove('wait');
+}
